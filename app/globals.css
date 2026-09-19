@@ -1,26 +1,305 @@
 @import "tailwindcss";
 
+/* ============================================================================
+   The Merch HQ — design tokens
+   Ported verbatim from design/tokens.css. Roles, never colour names.
+   Light theme only. White leads (60/30/10). There is no dark mode.
+   Measured WCAG 2.1 ratios are stated; they are verified by tests/tokens.test.ts.
+   ========================================================================= */
+
+@theme {
+  /* ---------- Brand: two blues ---------- */
+  --color-brand: #1b52d7; /* New Car         · Pantone 2728 C ·  6.49:1 on white */
+  --color-brand-deep: #021c8b; /* Resolution Blue · Pantone 2758 C · 13.62:1 on white */
+  --color-brand-pressed: #021979; /* deep @ 90% lightness — pressed only          */
+
+  /* ---------- Neutrals ---------- */
+  --color-ink: #13111f; /* Chinese Black · 18.62:1 — body + dark grounds  */
+  --color-ink-hover: #2b2933; /* ink, lightened — filled-button hover only     */
+  --color-ink-muted: #5a5c6e; /* Ink Gray      ·  6.58:1 — anything under 24px  */
+  --color-rule: #767888; /* Slate Gray    ·  4.36:1 — RULES ONLY.
+                                       Never text at any size in product UI.     */
+  --color-tint: #c0c7d3; /* Lavender Gray ·  1.70:1 — tint + garment colour.
+                                       Never text, never an icon.                */
+
+  /* The page ground is a cool near-white; cards sit on it in pure white.
+     Two grounds one step apart is what lets a card read without a shadow. */
+  --color-canvas: #f9fafb;
+  --color-surface: #ffffff;
+
+  /* Product plate. Every garment photograph is shot on this exact grey, so
+     the plate and the photograph's own ground are the same value and the
+     product appears to float rather than sit in a box. */
+  --color-plate: #efeff2;
+
+  /* Every interactive boundary. A hairline, not a colour: it darkens on hover
+     instead of changing hue, which is what keeps the chrome monochrome. */
+  --color-hairline: rgb(0 0 0 / 0.1);
+  --color-hairline-strong: rgb(0 0 0 / 0.22);
+
+  /* Neutral, not blue-tinted. The blue cast was right when blue panels carried
+     the page; with the chrome monochrome it reads as a colour cast instead. */
+  --color-surface-sunken: #f4f4f6; /* section bands, table zebra  */
+  --color-surface-hover: #f0f0f2; /* row / card hover            */
+  --color-surface-pressed: #e8e8ec; /* pressed secondary + ghost   */
+
+  /* ---------- Field colour: fenced, decision pending ---------- */
+  /* Marigold. Garments, sticker stock, packaging interiors, story grounds.
+     NEVER type on white (1.61:1), never a quotation, never the logo,
+     and never any web surface. Declared so it is never re-invented ad hoc. */
+  --color-field-warm: #ffc23c;
+
+  /* ---------- Operational: quarantined to order comms ---------- */
+  --color-state-success: #0e7a57; /* 5.33:1 — placed, paid, shipped, delivered */
+  --color-state-warning: #b45309; /* 5.02:1 — sizes low, window closing        */
+  --color-state-danger: #c0233c; /* 5.92:1 — payment failed, cancelled        */
+  /* Danger at 90% / 80% lightness, for the destructive button only. Its focus
+     ring is red too, so it never promises a safe action. Ops-only — a buyer
+     never sees one. */
+  --color-state-danger-hover: #ad1f36;
+  --color-state-danger-pressed: #971a2d;
+
+  /* ---------- Client theming: the one overridden line ----------
+     Every commerce component reads accent from these, never from --color-brand.
+     A storefront overrides them on its root element from tenant.accent_colour. */
+  --color-accent: var(--color-brand);
+  --color-accent-deep: var(--color-brand-deep);
+  --color-accent-tint: #edf1fc; /* accent @ 8% over white */
+
+  /* ---------- Type ---------- */
+  --font-display: var(--font-grotesk), "Helvetica Neue", sans-serif; /* 600 / 700 */
+  --font-text: var(--font-grotesk), "Helvetica Neue", sans-serif; /* 400 / 500 / 600 */
+
+  /* ---------- Space: 4px base, nine steps, no in-betweens ----------
+     4–12 inside a component · 16–32 between components · 48–96 between sections.
+     Tailwind's default 0.25rem base already yields these; stated for the record. */
+  --spacing: 4px;
+
+  /* ---------- Radii ---------- */
+  --radius-sm: 6px; /* chips, swatches, badges */
+  --radius-md: 10px; /* inputs, selects         */
+  --radius-lg: 18px; /* cards, plates, panels   */
+  --radius-xl: 24px; /* dark bands, hero        */
+  /* Buttons are pill — rounded-full, never --radius-md. Only table cells
+     are square. */
+
+  /* ---------- Elevation: almost none ----------
+     Cards are separated by a hairline and by the canvas/surface step, not by
+     a shadow. e1 and e2 are kept as no-ops so the ~40 components that name
+     them keep compiling; naming them is how the intent stays legible. The one
+     surviving shadow lifts an overlay off the page it covers. */
+  --shadow-e1: none; /* resting card, table header    */
+  --shadow-e2: none; /* hovered card, dropdown        */
+  --shadow-e3: 0 12px 48px rgb(0 0 0 / 0.18); /* modal and drawer. Nothing else */
+
+  /* ---------- Motion: one curve, two durations, 300ms ceiling ---------- */
+  --ease-brand: cubic-bezier(0.2, 0, 0, 1);
+  --animate-duration-micro: 150ms;
+  --animate-duration-overlay: 250ms;
+}
+
+/* Type scale.
+ *
+ * Display sizes are fluid between a 360px and a 1440px viewport: each lands
+ * exactly on its designed figure at 1440 and never falls below Archivo's 20px
+ * screen floor. The designed values are the maxima, not approximations of them
+ * — at desktop this renders the scale as drawn. Fluid type is what the handoff
+ * asks for, and fixed 52px display type overflows at 360px.
+ *
+ *   size = clamp(min, slope·vw + intercept, max)
+ *   slope = (max − min) / 1080 · 100vw   ·   intercept = min − slope · 360
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --size-display: clamp(40px, 2.222vw + 32px, 64px);
+  --size-h1: clamp(32px, 1.4815vw + 26.667px, 48px);
+  --size-h2: clamp(26px, 1.111vw + 22px, 38px);
+  --size-h3: clamp(22px, 0.463vw + 20.33px, 27px);
+  --size-h4: 20px;
+
+  /* Text sizes are already inside the comfortable range at every viewport. */
+  --type-body-lg: 400 18px/1.6 var(--font-text);
+  --type-body: 400 16px/1.55 var(--font-text);
+  --type-body-sm: 400 14px/1.5 var(--font-text);
+  --type-label: 600 13px/1.2 var(--font-text);
+  --type-caption: 500 13px/1.4 var(--font-text);
+
+  --track-display: -0.03em;
+  --track-h1: -0.03em;
+  --track-h2: -0.03em;
+  --track-h3: -0.025em;
+  --track-h4: -0.02em;
+  --track-label: 0.1em;
+
+  --dur-micro: 150ms;
+  --dur-overlay: 250ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* 2px white offset + 2px accent. Never removed. */
+  --focus-ring: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-accent);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    margin: 0;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font: var(--type-body);
+    -webkit-font-smoothing: antialiased;
+    text-wrap: pretty;
+  }
+
+  a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--color-accent-deep);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  table {
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Focus is 2px white offset plus 2px accent, and it is never removed. */
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  /* Skeleton sweep: sunken base, 12% accent, 1.4s linear. Derived from the
+     accent so a client storefront's skeletons take the client's colour too. */
+  .mhq-shimmer {
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--color-accent) 12%, transparent) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    animation: mhq-shimmer 1400ms linear infinite;
+  }
+
+  @keyframes mhq-shimmer {
+    0% {
+      background-position: -100% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  /* "Made for" strip. Two identical tracks slide as one so the loop has no
+     seam. Held still for anyone who has asked for reduced motion — the rule
+     below stops the animation, and the strip simply reads as a static list. */
+  .mhq-marquee-track {
+    animation: mhq-marquee 38s linear infinite;
+  }
+
+  .mhq-marquee:hover .mhq-marquee-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes mhq-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Display type. Archivo 700/800 only, never below 20px on screen.
+     Long single words in a tight display face are the one place overflow still
+     bites at 360px, so display classes are allowed to break. */
+  .t-display,
+  .t-h1,
+  .t-h2,
+  .t-h3,
+  .t-h4 {
+    font-family: var(--font-display);
+    overflow-wrap: break-word;
+  }
+  /* 700, not 800. The reference sets its display type at a semibold weight with
+     tight tracking and near-solid leading; 800 at the same size reads as a
+     different, louder voice. Archivo 700 is the brandbook's lighter permitted
+     display weight, so the typeface is unchanged — only its proportions are. */
+  .t-display {
+    font-weight: 700;
+    font-size: var(--size-display);
+    line-height: 1.05;
+    letter-spacing: var(--track-display);
+  }
+  .t-h1 {
+    font-weight: 700;
+    font-size: var(--size-h1);
+    line-height: 1.05;
+    letter-spacing: var(--track-h1);
+  }
+  .t-h2 {
+    font-weight: 700;
+    font-size: var(--size-h2);
+    line-height: 1.1;
+    letter-spacing: var(--track-h2);
+  }
+  .t-h3 {
+    font-weight: 700;
+    font-size: var(--size-h3);
+    line-height: 1.18;
+    letter-spacing: var(--track-h3);
+  }
+  .t-h4 {
+    font-weight: 700;
+    font-size: var(--size-h4);
+    line-height: 1.28;
+    letter-spacing: var(--track-h4);
+  }
+
+  /* Text. Inter. */
+  .t-body-lg {
+    font: var(--type-body-lg);
+  }
+  .t-body {
+    font: var(--type-body);
+  }
+  .t-body-sm {
+    font: var(--type-body-sm);
+  }
+  .t-label {
+    font: var(--type-label);
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+  }
+  .t-caption {
+    font: var(--type-caption);
+    color: var(--color-ink-muted);
+  }
+
+  /* Every number a client acts on: Inter 500, tabular, never 400 weight.
+     Prices, quantities, sizes, dates and codes. */
+  .figure {
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
 }

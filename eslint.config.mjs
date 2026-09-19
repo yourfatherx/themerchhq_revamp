@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The exported design system is reference material, not source. support.js
+    // is the Claude Design preview runtime and is never shipped — see
+    // design/README.md.
+    "design/**",
   ]),
 ]);
 

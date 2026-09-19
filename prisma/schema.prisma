@@ -1,0 +1,373 @@
+// The Merch HQ — data model (PRD §9).
+//
+// Two rules govern this schema and are not negotiable:
+//
+//  1. NFR-1 — `tenantId` is DENORMALISED onto every tenant-owned row, including
+//     ones that could reach it through a relation. That is what lets the data
+//     access layer inject a tenant filter uniformly in one place, so a query
+//     that is not tenant-scoped is not expressible. Reaching tenancy through a
+//     join would mean every model needing bespoke scoping, which is how leaks happen.
+//
+//  2. NFR-7 — all money is an integer number of PAISE. Never Float, never
+//     Decimal-as-float. `Int` tops out at ~₹21.4 million per row, far above any
+//     single order or payout this business writes.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Prisma 7 removed `url` from the schema. The connection string for migrate
+// lives in prisma.config.ts; the runtime client takes a driver adapter.
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────── Tenancy ───────────────────────────────
+
+enum TenantStatus {
+  lead // created by a quote request (MKT-3), not yet sold
+  active
+  archived
+}
+
+enum TenantType {
+  club
+  fest
+  department
+  corporate
+  alumni
+  other
+}
+
+model Tenant {
+  id           String       @id @default(cuid())
+  /// Lowercase, DNS-safe, unique and reserved on save (OPS-1).
+  slug         String       @unique
+  name         String
+  type         TenantType
+  logoUrl      String?
+  /// The one line a storefront overrides: --color-accent.
+  accentColour String       @default("#1B52D7")
+  contactName  String
+  contactPhone String
+  contactEmail String
+  status       TenantStatus @default(lead)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  campaigns  Campaign[]
+  products   Product[]
+  variants   Variant[]
+  sizeCharts SizeChart[]
+  orders     Order[]
+  orderItems OrderItem[]
+  payouts    Payout[]
+  users      TenantUser[]
+
+  @@index([status])
+}
+
+enum TenantRole {
+  owner
+  member
+}
+
+model TenantUser {
+  id       String     @id @default(cuid())
+  tenantId String
+  email    String
+  role     TenantRole @default(member)
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, email])
+  @@index([email])
+}
+
+enum StaffRole {
+  admin
+  ops
+}
+
+/// Staff are deliberately NOT tenant-scoped — they are the only actor that may
+/// read across tenants, and only through `staffDb()`.
+model StaffUser {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  role      StaffRole @default(ops)
+  createdAt DateTime  @default(now())
+}
+
+// ────────────────────────────── Campaigns ──────────────────────────────
+
+/// OPS-7. Transitions past `closed` are explicit staff actions; there is no
+/// automatic progression. Only draft → live → closed happens on a schedule.
+enum CampaignStatus {
+  draft
+  live
+  closed
+  in_production
+  delivered
+  archived
+}
+
+enum MoqFailurePolicy {
+  extend
+  refund
+}
+
+enum PayoutPayeeType {
+  entity
+  individual
+}
+
+enum PayoutBasis {
+  percent_gross
+  percent_margin
+  fixed_per_unit
+}
+
+model Campaign {
+  id                     String           @id @default(cuid())
+  tenantId               String
+  title                  String
+  description            String
+  opensAt                DateTime
+  closesAt               DateTime
+  /// 0 means no minimum.
+  moq                    Int              @default(0)
+  moqFailurePolicy       MoqFailurePolicy @default(extend)
+  deliveryEstimate       DateTime
+  collectionInstructions String
+  status                 CampaignStatus   @default(draft)
+
+  // Payouts (PYO-1). A campaign cannot go live without these populated.
+  payoutPayeeType PayoutPayeeType @default(entity)
+  payoutPayeeName String?
+  payoutBasis     PayoutBasis?
+  /// Basis points when percentage, paise when fixed-per-unit.
+  payoutValue     Int?
+  payoutSlaDays   Int?
+  /// PYO-2 — mandatory when payeeType is `individual`, and rendered on the
+  /// storefront FAQ. Enforced in the go-live check, not by the database, so the
+  /// failure is a readable message rather than a constraint violation.
+  disclosureText  String?
+
+  /// GST rate in basis points (1200 = 12%). Null until D2 is settled with a CA
+  /// — PRD says do not launch without that advice.
+  taxRateBasisPoints Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant   Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  products Product[]
+  orders   Order[]
+  payouts  Payout[]
+
+  @@index([tenantId, status])
+  @@index([closesAt])
+}
+
+// ─────────────────────────────── Catalogue ───────────────────────────────
+
+model SizeChart {
+  id       String @id @default(cuid())
+  tenantId String
+  name     String
+  /// OPS-4. Charts are immutable versions: editing creates a new row, so a
+  /// chart attached to a closed campaign can never be altered retrospectively.
+  version  Int    @default(1)
+  /// Rows of { size, chestCm, lengthCm } — measured off the actual blank.
+  measurements Json
+
+  createdAt DateTime @default(now())
+
+  tenant   Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  products Product[]
+
+  @@unique([tenantId, name, version])
+  @@index([tenantId])
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  tenantId    String
+  campaignId  String
+  name        String
+  description String
+  /// Paise (NFR-7).
+  basePrice   Int
+  images      String[]
+  printSpec   String
+  sizeChartId String?
+  /// OPS-3 — cannot publish without at least one variant and a size chart.
+  published   Boolean  @default(false)
+
+  /// PAY-9 — GST rate in basis points, per product. Falls back to the
+  /// campaign's rate. Null means undecided, which blocks go-live rather than
+  /// defaulting to zero: silently charging 0% is the expensive failure.
+  taxRateBasisPoints Int?
+  /// Free text for the CA's classification, e.g. "apparel > Rs 1000" or
+  /// "mixed supply — highest component". Carried so a rate is never a bare
+  /// number nobody can justify at assessment.
+  taxCategory        String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant    Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  campaign  Campaign   @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  sizeChart SizeChart? @relation(fields: [sizeChartId], references: [id])
+  variants  Variant[]
+
+  @@index([tenantId, campaignId])
+}
+
+model Variant {
+  id        String  @id @default(cuid())
+  tenantId  String
+  productId String
+  size      String
+  colour    String?
+  sku       String?
+  /// Paise, may be negative. Added to the product's base price.
+  priceDelta Int    @default(0)
+  /// "Not offered on this campaign" — shown, never selectable.
+  retired    Boolean @default(false)
+
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  tenant     Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+
+  @@unique([productId, size, colour])
+  @@index([tenantId, productId])
+}
+
+// ──────────────────────────────── Orders ────────────────────────────────
+
+enum PaymentStatus {
+  pending
+  paid
+  failed
+  refunded
+  partially_refunded
+}
+
+/// POS-4 — the statuses a buyer sees.
+enum OrderStatus {
+  confirmed
+  in_production
+  ready_for_collection
+  collected
+}
+
+model Order {
+  id         String @id @default(cuid())
+  tenantId   String
+  campaignId String
+
+  buyerName String
+  phone     String
+  email     String
+  /// Institutional identifier. Mandatory, format deliberately not validated
+  /// (PAY-2) — a roll number scheme we reject is a lost order.
+  identifier String
+
+  /// Paise, snapshotted at payment (PAY-8).
+  subtotal Int
+  tax      Int
+  total    Int
+
+  paymentStatus PaymentStatus @default(pending)
+  /// The gateway's payment id. Unique, which is what makes webhook handling
+  /// idempotent (PAY-6) — a replayed webhook collides instead of duplicating.
+  paymentRef    String?       @unique
+
+  /// PAY-10 — `MHQ-XXXX`, collision-checked, never sequential.
+  pickupCode String @unique
+
+  /// POS-2 — 24 hours from payment, or `closesAt`, whichever is earlier.
+  sizeChangeExpiresAt DateTime?
+
+  status      OrderStatus @default(confirmed)
+  collectedAt DateTime?
+  /// Which staff member or volunteer marked it collected (POS-5).
+  collectedBy String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant   Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  campaign Campaign    @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  items    OrderItem[]
+
+  @@index([tenantId, campaignId])
+  @@index([campaignId, paymentStatus])
+  @@index([phone])
+}
+
+model OrderItem {
+  id        String @id @default(cuid())
+  tenantId  String
+  orderId   String
+  variantId String
+  qty       Int
+  /// Paise, snapshotted at purchase (PAY-8). A later price edit never rewrites
+  /// a historical order.
+  unitPrice Int
+  taxAmount Int
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variant Variant @relation(fields: [variantId], references: [id])
+  tenant  Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, orderId])
+  @@index([variantId])
+}
+
+// ──────────────────────────────── Payouts ────────────────────────────────
+
+enum PayoutStatus {
+  pending
+  issued
+}
+
+model Payout {
+  id         String       @id @default(cuid())
+  tenantId   String
+  campaignId String
+  /// Paise.
+  amount     Int
+  status     PayoutStatus @default(pending)
+  paidAt     DateTime?
+  reference  String?
+  /// PYO-6 — required when the payee is an individual, for TDS.
+  payeePan   String?
+
+  createdAt DateTime @default(now())
+
+  tenant   Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, status])
+}
+
+// ────────────────────────────── Audit (NFR-10) ──────────────────────────────
+
+/// Append-only. Every order and payment mutation writes one row. There is no
+/// update or delete path in the data layer.
+model AuditLog {
+  id        String   @id @default(cuid())
+  /// Null for system actions such as a gateway webhook.
+  tenantId  String?
+  actor     String
+  entity    String
+  entityId  String
+  action    String
+  payload   Json
+  createdAt DateTime @default(now())
+
+  @@index([tenantId, createdAt])
+  @@index([entity, entityId])
+}

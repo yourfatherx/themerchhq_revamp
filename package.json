@@ -6,21 +6,37 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:seed": "node --env-file=.env.local prisma/seed.ts",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@neon/config": "^1.7.1",
+    "@neon/env": "^1.4.2",
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
     "next": "16.3.5",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^24.13.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
+    "prisma": "^7.10.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.0.1"
+  },
+  "overrides": {
+    "mysql2": "^3.24.4",
+    "deepmerge-ts": "^8.0.2"
   }
 }
