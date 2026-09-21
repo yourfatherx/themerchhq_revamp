@@ -101,13 +101,27 @@ export function RoundLink({
   );
 }
 
-export function Arrow({ className }: { className?: string }) {
+/**
+ * Size is a prop rather than a class because `cn` is a plain join, not
+ * `tailwind-merge` — passing `className="size-4"` against a built-in
+ * `size-[18px]` leaves both on the element and lets CSS source order decide,
+ * which silently ignored the caller. As an attribute it cannot conflict.
+ */
+export function Arrow({
+  size = 18,
+  className,
+}: {
+  size?: number;
+  className?: string;
+}) {
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
       aria-hidden="true"
-      className={cn("size-[18px]", className)}
+      width={size}
+      height={size}
+      className={className}
     >
       <path
         d="M7 17 17 7M9 7h8v8"

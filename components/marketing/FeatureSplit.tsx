@@ -1,5 +1,7 @@
 import Image from "next/image";
-import { Chip, Eyebrow, RoundLink } from "./Bits";
+import Link from "next/link";
+import { Arrow, Chip, Eyebrow, RoundLink } from "./Bits";
+import { SizeTableSpecimen } from "./Specimens";
 
 /**
  * The reference's fourth block: a tall image card on the left carrying a data
@@ -11,26 +13,15 @@ import { Chip, Eyebrow, RoundLink } from "./Bits";
  * thing to float over a photograph of the print run.
  */
 
-const SIZE_ROWS = [
-  { size: "S", qty: 12 },
-  { size: "M", qty: 41 },
-  { size: "L", qty: 68 },
-  { size: "XL", qty: 39 },
-  { size: "2XL", qty: 11 },
-] as const;
-
 export function FeatureSplit() {
-  const total = SIZE_ROWS.reduce((n, r) => n + r.qty, 0);
-  const max = Math.max(...SIZE_ROWS.map((r) => r.qty));
-
   return (
     <section className="mx-auto max-w-[1280px] px-5 py-6 sm:px-8">
       <div className="grid gap-4 lg:grid-cols-12">
         {/* Image + floating data panel */}
         <div className="relative min-h-[560px] overflow-hidden rounded-xl lg:col-span-7">
           <Image
-            src="/studio/s2.jpg"
-            alt="A print run being checked in the studio"
+            src="/studio/garment-rack.jpg"
+            alt="A row of identical garments hanging on a rail"
             fill
             sizes="(min-width: 1024px) 58vw, 100vw"
             className="object-cover"
@@ -42,45 +33,9 @@ export function FeatureSplit() {
               <Chip tone="solid">Closed</Chip>
             </div>
 
-            <table className="mt-4 w-full border-collapse text-left">
-              <caption className="sr-only">
-                Quantity ordered by size for the Heavyweight hoodie
-              </caption>
-              <tbody>
-                {SIZE_ROWS.map((r) => (
-                  <tr key={r.size} className="border-b border-hairline">
-                    <th
-                      scope="row"
-                      className="figure py-2 text-[14px] font-medium text-ink"
-                    >
-                      {r.size}
-                    </th>
-                    <td className="w-full px-4 py-2">
-                      <span
-                        aria-hidden="true"
-                        className="block h-2 rounded-full bg-accent"
-                        style={{ width: `${(r.qty / max) * 100}%` }}
-                      />
-                    </td>
-                    <td className="figure py-2 text-right text-[14px] text-ink">
-                      {r.qty}
-                    </td>
-                  </tr>
-                ))}
-                <tr>
-                  <th
-                    scope="row"
-                    className="py-2.5 text-[14px] font-semibold text-ink"
-                  >
-                    Total
-                  </th>
-                  <td />
-                  <td className="figure py-2.5 text-right text-[14px] font-semibold text-ink">
-                    {total}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="mt-4">
+              <SizeTableSpecimen density="compact" />
+            </div>
           </div>
         </div>
 
@@ -101,25 +56,41 @@ export function FeatureSplit() {
             rebuild by hand from a thread of corrections.
           </p>
 
-          <div className="mt-8 flex items-center gap-4">
-            <RoundLink href="/how-it-works" label="See how a run works" />
-            <p className="t-body-sm text-ink-muted">
+          {/* One target, not a button beside a label that repeats its accessible
+              name — that reads the text twice and leaves the visible words
+              inert. */}
+          <Link
+            href="/how-it-works"
+            className="group mt-8 flex w-fit items-center gap-4 rounded-full focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:outline-none"
+          >
+            <span className="bg-accent text-surface group-hover:bg-brand-deep grid size-12 shrink-0 place-items-center rounded-full transition-colors">
+              <Arrow />
+            </span>
+            <span className="t-body-sm text-ink-muted transition-colors group-hover:text-ink">
               See how a run works
-            </p>
-          </div>
+            </span>
+          </Link>
 
-          {/* Small image card, as the reference's "coming soon" tile */}
-          <div className="relative mt-auto min-h-[190px] overflow-hidden rounded-lg pt-10">
-            <Image
-              src="/products/campus-cap.png"
-              alt="Blank navy six-panel campus cap"
-              fill
-              sizes="(min-width: 1024px) 28vw, 100vw"
-              className="object-cover object-center"
-            />
-            <div className="absolute inset-x-4 bottom-4 flex items-center justify-between gap-3">
-              <Chip>Campus cap · ₹649</Chip>
-              <RoundLink href="/catalogue" label="Open the catalogue" tone="surface" />
+          {/* The spacing lives on this wrapper, not on the card: `fill` resolves
+              to `inset: 0`, so padding on the card itself is covered by the
+              photograph rather than showing as a gap. */}
+          <div className="mt-auto pt-12">
+            <div className="relative min-h-[190px] overflow-hidden rounded-lg">
+              <Image
+                src="/products/campus-cap.png"
+                alt="Blank navy six-panel campus cap"
+                fill
+                sizes="(min-width: 1024px) 28vw, 100vw"
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-x-4 bottom-4 flex items-center justify-between gap-3">
+                <Chip>Campus cap · ₹649</Chip>
+                <RoundLink
+                  href="/catalogue"
+                  label="Open the catalogue"
+                  tone="surface"
+                />
+              </div>
             </div>
           </div>
         </div>

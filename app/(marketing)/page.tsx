@@ -5,8 +5,8 @@ import { FeatureSplit } from "@/components/marketing/FeatureSplit";
 import { HeroMedia } from "@/components/marketing/HeroMedia";
 import { OfferBento } from "@/components/marketing/OfferBento";
 import { ProductGrid } from "@/components/marketing/ProductGrid";
-import { ProgramRow } from "@/components/marketing/ProgramRow";
 import { ProofRow } from "@/components/marketing/ProofRow";
+import { RunTimeline } from "@/components/marketing/RunTimeline";
 import { QuoteCards } from "@/components/marketing/QuoteCards";
 
 export const metadata: Metadata = {
@@ -40,7 +40,7 @@ export default function Home() {
       />
       <ClientMarquee />
       <OfferBento />
-      <ProgramRow />
+      <RunTimeline />
       <FeatureSplit />
       <ProofRow />
       <ProductGrid />

@@ -2,7 +2,7 @@ import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Chip } from "./Bits";
 
 /**
- * Full-bleed media with the headline set over it, closed by the wordmark.
+ * Full-bleed media with the headline set over it.
  *
  * This is a deliberate, approved exception to the brand rule that type never
  * sits on a photograph — taken so the opening matches the layout reference. It
@@ -17,10 +17,11 @@ import { Chip } from "./Bits";
  * of the 4.5:1 floor, and the headline is display-sized so its real requirement
  * is 3:1. Re-measure when the media changes.
  *
- * The wordmark is the reference's closing move: set at viewport width, cropped
- * by the section's own edge, sitting in the part of the scrim that is nearly
- * solid ink. It is decorative — the accessible name of this page is the h1
- * above it — so it is `aria-hidden` and the reader loses nothing.
+ * The layout reference closes its hero with an oversized wordmark. That was
+ * tried here and removed: our wordmark is placed artwork with mandated clear
+ * space, not type, so it cannot bleed off the edge the way the reference's
+ * does, and sitting it upright on a solid block at the foot of the hero simply
+ * repeated the logo already in the navigation a screen above.
  *
  * `video` and `src` share the media slot. Video is decorative and silent, so it
  * is muted, looped, `playsInline` and `aria-hidden`. Reduced motion is honoured
@@ -37,7 +38,7 @@ export function HeroMedia({
   video?: { mp4: string; webm?: string; poster: string };
 }) {
   return (
-    <section className="relative isolate flex min-h-[720px] flex-col overflow-hidden bg-ink">
+    <section className="relative isolate overflow-hidden bg-ink">
       {video ? (
         <video
           aria-hidden="true"
@@ -75,22 +76,22 @@ export function HeroMedia({
         className="absolute inset-0 bg-gradient-to-t from-ink via-ink/80 to-ink/35"
       />
 
-      <div className="relative mx-auto w-full max-w-[1280px] grow px-5 pt-32 sm:px-8">
-        <Chip tone="dark" className="border border-white/15">
+      <div className="relative mx-auto flex min-h-[620px] max-w-[1280px] flex-col justify-end px-5 pt-32 pb-16 sm:px-8 lg:min-h-[700px] lg:pb-20">
+        <Chip tone="dark" className="w-fit border border-white/15">
           <span aria-hidden="true" className="size-1.5 rounded-full bg-accent" />
           Merch, handled — quote to doorstep
         </Chip>
 
-        <h1 className="t-h1 mt-6 max-w-[16ch] text-surface">
+        <h1 className="t-display mt-6 max-w-[14ch] text-surface">
           250 hoodies. One link. No spreadsheet.
         </h1>
 
-        <p className="t-body-lg mt-5 max-w-[48ch] text-white/75">
+        <p className="t-body-lg mt-6 max-w-[52ch] text-white/75">
           We design and make the merch, then give your club or company its own
           storefront so your people order and pay for it themselves.
         </p>
 
-        <div className="mt-8 flex flex-wrap items-center gap-3">
+        <div className="mt-9 flex flex-wrap items-center gap-3">
           <ButtonLink href="/quote" size="lg" onDark>
             Request a quote
           </ButtonLink>
@@ -99,16 +100,6 @@ export function HeroMedia({
           </ButtonLink>
         </div>
       </div>
-
-      {/* Cropped by the section edge on purpose — the reference lets its
-          wordmark run past the bottom rather than sit tidily above it. */}
-      <p
-        aria-hidden="true"
-        className="relative -mb-[1.5vw] w-full px-3 text-center leading-[0.78] font-bold tracking-[-0.045em] text-surface"
-        style={{ fontSize: "13.2vw" }}
-      >
-        The Merch HQ
-      </p>
     </section>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CtaBlock } from "@/components/marketing/CtaBlock";
+import { FaqPanel } from "@/components/marketing/FaqPanel";
 import { ProcessPath } from "@/components/marketing/ProcessPath";
 import { Alert } from "@/components/ui/Alert";
 
@@ -53,18 +54,9 @@ export default function HowItWorksPage() {
       <ProcessPath />
 
       <section className="mx-auto max-w-[1280px] px-5 pb-20 sm:px-8 sm:pb-24">
-        <h2 className="t-h2 text-ink">Questions we get first</h2>
+        <FaqPanel items={FAQ} />
 
-        <dl className="mt-10 grid gap-x-12 gap-y-10 lg:grid-cols-2">
-          {FAQ.map((f) => (
-            <div key={f.q}>
-              <dt className="t-h4 text-ink">{f.q}</dt>
-              <dd className="t-body mt-3 max-w-[62ch] text-ink-muted">{f.a}</dd>
-            </div>
-          ))}
-        </dl>
-
-        <div className="mt-14 max-w-[70ch]">
+        <div className="mt-8 max-w-[70ch]">
           <Alert
             tone="info"
             title="If a campaign misses its minimum, nobody loses money"

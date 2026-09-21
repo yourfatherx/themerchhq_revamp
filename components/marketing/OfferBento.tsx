@@ -91,8 +91,8 @@ export function OfferBento() {
           {/* Image card with floating panel */}
           <div className="relative min-h-[420px] overflow-hidden rounded-lg lg:col-span-5">
             <Image
-              src="/studio/s3.jpg"
-              alt="A campaign being packed in the studio"
+              src="/studio/folded-stack.jpg"
+              alt="Blank tees in four colourways, fanned out on a white ground"
               fill
               sizes="(min-width: 1024px) 42vw, 100vw"
               className="object-cover"

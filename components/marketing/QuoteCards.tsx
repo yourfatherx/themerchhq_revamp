@@ -80,16 +80,19 @@ function NoQuotesYet() {
               this site in full.
             </p>
 
-            <div className="mt-auto flex flex-wrap items-center gap-3 pt-10">
+            {/* One action, named. The bare arrow that used to sit beside this
+                went somewhere else entirely — /how-it-works, on its fourth link
+                from this page — while looking like a second half of the button
+                next to it. An unlabelled control cannot say where it goes. */}
+            <div className="mt-auto pt-10">
               <ButtonLink href="/quote">Be the first campaign</ButtonLink>
-              <RoundLink href="/how-it-works" label="How it works" tone="surface" />
             </div>
           </div>
 
           <div className="relative min-h-[380px] overflow-hidden rounded-lg lg:col-span-7">
             <Image
-              src="/studio/s4.jpg"
-              alt="An order being boxed for dispatch"
+              src="/studio/print-press.jpg"
+              alt="A screen printing carousel on the shop floor"
               fill
               sizes="(min-width: 1024px) 56vw, 100vw"
               className="object-cover"
