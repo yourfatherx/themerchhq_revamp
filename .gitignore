@@ -40,3 +40,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .neon
+
+# Brand and design source. The brandbook PDF, the PRD and the design-system
+# exports are internal material and were purged from this repository's history
+# on 23 Sep 2026. Nothing imports them — every reference in the codebase is a
+# provenance comment — so keeping them out costs the build nothing.
+# Local copies live outside the repo.
+design/
