@@ -47,3 +47,10 @@ next-env.d.ts
 # provenance comment — so keeping them out costs the build nothing.
 # Local copies live outside the repo.
 design/
+
+# Reference captures. `scripts/reference-teardown.mjs` writes screenshots of
+# third-party sites we study for layout and rhythm — 31.8 MB of the Menorca
+# Framer template in the first batch. They are someone else's content and this
+# repo is public, so the captures stay local; docs/reference/README.md explains
+# what the script produces and where a given batch came from.
+docs/reference/*/

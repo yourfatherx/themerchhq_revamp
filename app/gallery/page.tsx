@@ -6,7 +6,7 @@ import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
 import { IconButton } from "@/components/ui/IconButton";
 import { SiteFooter, StorefrontFooterMark } from "@/components/chrome/SiteFooter";
-import { SiteNavbar } from "@/components/chrome/SiteNavbar";
+import { SiteHeader } from "@/components/chrome/SiteHeader";
 import { StorefrontNavbar } from "@/components/chrome/StorefrontNavbar";
 import { CommerceDemo } from "./CommerceDemo";
 import { DataDemo } from "./DataDemo";
@@ -244,10 +244,10 @@ export default function GalleryPage() {
         <div>
           <h3 className="t-h4 text-ink">Navbar · our own site</h3>
           <p className="t-caption mt-1">
-            Horizontal lockup at 30px · no divider · one primary CTA
+            Promise strip in New Car · lockup at 148px · rolling-letter links · one primary CTA · hides on scroll down, returns on scroll up
           </p>
           <div className="mt-5 overflow-hidden rounded-lg border border-hairline">
-            <SiteNavbar />
+            <SiteHeader preview />
           </div>
         </div>
 

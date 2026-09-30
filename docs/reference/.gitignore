@@ -1,0 +1,5 @@
+# Capture output kept locally only: videos are tens of MB, and the HTML dumps
+# are the reference template's own markup, which we have no reason to store.
+*.webm
+*.html
+.video-tmp/

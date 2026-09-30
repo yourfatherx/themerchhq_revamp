@@ -82,6 +82,7 @@ export function ProductPlate({
   colour,
   className,
   priority,
+  square,
   children,
 }: {
   /** Omit until a real flat-lay exists for this product. */
@@ -91,6 +92,10 @@ export function ProductPlate({
   colour?: string | null;
   className?: string;
   priority?: boolean;
+  /** Square corners, for our own marketing grids. Storefronts keep radius lg.
+   *  A prop rather than a class: `cn` is a plain join, so a `rounded-none`
+   *  passed in would sit beside `rounded-lg` and lose to source order. */
+  square?: boolean;
   /** Corner facts, overlaid inside the plate and clipped by its radius. */
   children?: ReactNode;
 }) {
@@ -99,7 +104,8 @@ export function ProductPlate({
   return (
     <div
       className={cn(
-        "relative aspect-4/5 overflow-hidden rounded-lg bg-plate",
+        "relative aspect-4/5 overflow-hidden bg-plate",
+        square ? "rounded-none" : "rounded-lg",
         className,
       )}
       style={tone ? { backgroundColor: tone } : undefined}

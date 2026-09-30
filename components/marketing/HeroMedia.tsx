@@ -1,27 +1,21 @@
-import { ButtonLink } from "@/components/ui/ButtonLink";
-import { Chip } from "./Bits";
+import Link from "next/link";
 
 /**
- * Full-bleed media with the headline set over it.
+ * Full-bleed media, 96% of the viewport tall, with the claim centred over it.
  *
  * This is a deliberate, approved exception to the brand rule that type never
- * sits on a photograph — taken so the opening matches the layout reference. It
- * applies here and nowhere else in the system.
+ * sits on a photograph — it applies here and nowhere else in the system. Every
+ * other band puts its words on a solid card (see `PhotoBand`).
  *
- * The exception is made safe rather than merely taken: the media carries a
- * scrim that reaches fully opaque ink at the bottom edge, so the further down
- * the block a line sits, the less the media underneath it can matter. The rule
- * exists to stop type landing on unpredictable values; the scrim bounds the
- * unpredictability rather than removing it. Measured against the current clip
- * across its whole runtime, the worst frame puts the headline at 5.0:1 — clear
- * of the 4.5:1 floor, and the headline is display-sized so its real requirement
- * is 3:1. Re-measure when the media changes.
+ * The exception is made safe by construction rather than by measuring one clip:
+ * the scrim is never lighter than 62% ink anywhere in the frame, which holds
+ * white type at 5.22:1 even over a pure-white frame — clear of 4.5:1 for every
+ * size, including the 12px navigation that sits over the top of the hero. It
+ * darkens toward the foot, where the page meets the white grid below.
  *
- * The layout reference closes its hero with an oversized wordmark. That was
- * tried here and removed: our wordmark is placed artwork with mandated clear
- * space, not type, so it cannot bleed off the edge the way the reference's
- * does, and sitting it upright on a solid block at the foot of the hero simply
- * repeated the logo already in the navigation a screen above.
+ * The headline is set in capitals with one phrase in italic lower case: the
+ * single change of voice the layout asks for, made inside our one family
+ * instead of with a second typeface.
  *
  * `video` and `src` share the media slot. Video is decorative and silent, so it
  * is muted, looped, `playsInline` and `aria-hidden`. Reduced motion is honoured
@@ -38,7 +32,7 @@ export function HeroMedia({
   video?: { mp4: string; webm?: string; poster: string };
 }) {
   return (
-    <section className="relative isolate overflow-hidden bg-ink">
+    <section className="relative isolate flex h-[96svh] min-h-[600px] flex-col items-center justify-center overflow-hidden bg-ink px-4 pt-[100px] text-center sm:px-5">
       {video ? (
         <video
           aria-hidden="true"
@@ -48,7 +42,7 @@ export function HeroMedia({
           playsInline
           preload="metadata"
           poster={video.poster}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 -z-20 h-full w-full object-cover"
         >
           {video.webm ? (
             <source
@@ -66,40 +60,44 @@ export function HeroMedia({
       ) : src ? (
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 -z-20 bg-cover bg-center"
           style={{ backgroundImage: `url(${src})` }}
         />
       ) : null}
 
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-t from-ink via-ink/80 to-ink/35"
+        className="absolute inset-0 -z-10 bg-gradient-to-b from-ink/[0.62] via-ink/[0.62] to-ink/80"
       />
 
-      <div className="relative mx-auto flex min-h-[620px] max-w-[1280px] flex-col justify-end px-5 pt-32 pb-16 sm:px-8 lg:min-h-[700px] lg:pb-20">
-        <Chip tone="dark" className="w-fit border border-white/15">
-          <span aria-hidden="true" className="size-1.5 rounded-full bg-accent" />
-          Merch, handled — quote to doorstep
-        </Chip>
+      <h1 className="max-w-[18ch] text-[clamp(36px,3.9vw+22px,76px)] leading-[1.02] font-semibold tracking-[-0.045em] text-surface uppercase">
+        250 hoodies.{" "}
+        <em className="font-normal tracking-[-0.03em] normal-case">one link.</em>{" "}
+        No spreadsheet.
+      </h1>
 
-        <h1 className="t-display mt-6 max-w-[14ch] text-surface">
-          250 hoodies. One link. No spreadsheet.
-        </h1>
+      <p className="mt-6 max-w-[46ch] text-[16px] leading-[1.45] tracking-[-0.01em] text-surface sm:text-[18px]">
+        We design and make the merch, then give your club or company its own
+        storefront so your people order and pay for it themselves.
+      </p>
 
-        <p className="t-body-lg mt-6 max-w-[52ch] text-white/75">
-          We design and make the merch, then give your club or company its own
-          storefront so your people order and pay for it themselves.
-        </p>
-
-        <div className="mt-9 flex flex-wrap items-center gap-3">
-          <ButtonLink href="/quote" size="lg" onDark>
-            Request a quote
-          </ButtonLink>
-          <ButtonLink href="/catalogue" size="lg" onDark variant="secondary">
-            See the catalogue
-          </ButtonLink>
-        </div>
+      <div className="mt-9 flex flex-wrap items-center justify-center gap-2.5">
+        <GlassPill href="/quote">Request a quote</GlassPill>
+        <GlassPill href="/catalogue">See the catalogue</GlassPill>
       </div>
     </section>
+  );
+}
+
+/** Outline pill for use over the hero only: white outline and type at rest,
+ *  filled white with ink type when pointed at or focused. */
+function GlassPill({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <Link
+      href={href}
+      className="inline-flex h-12 items-center rounded-full border border-white/85 px-6 text-[15px] font-medium tracking-[-0.01em] text-surface no-underline transition-colors duration-150 ease-brand hover:bg-surface hover:text-ink hover:no-underline focus-visible:bg-surface focus-visible:text-ink"
+    >
+      {children}
+    </Link>
   );
 }
