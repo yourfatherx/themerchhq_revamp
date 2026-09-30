@@ -132,6 +132,31 @@ export const PAIRINGS = [
   },
 ] as const;
 
+/**
+ * The two places the system sets white type straight onto a photograph: the
+ * home hero, and a `PhotoBand` caption. Neither can state the colour behind the
+ * words, so each states a floor instead — an ink scrim that never thins past
+ * the alpha below, anywhere the type can reach.
+ *
+ * `stated` is measured over a pure white frame, the brightest a photograph can
+ * be. That is what makes these safe to swap pictures behind: the guarantee is
+ * a property of the scrim, not of the clip that happens to be there today.
+ */
+export const SCRIMS = [
+  {
+    alpha: 0.62,
+    stated: 5.22,
+    label: "Hero scrim",
+    use: "The home hero headline, its buttons, and the nav that sits over it",
+  },
+  {
+    alpha: 0.66,
+    stated: 6.02,
+    label: "PhotoBand caption scrim",
+    use: "A band's title, body and pill, in the corner the scrim holds",
+  },
+] as const;
+
 /** Pairings that are measured and deliberately NOT shipped. Recorded so they
  *  are never reintroduced by someone re-deriving the palette. */
 export const WITHHELD = [

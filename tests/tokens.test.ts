@@ -1,11 +1,12 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { ratio } from "@/lib/contrast";
+import { composite, ratio } from "@/lib/contrast";
 import {
   OPERATIONAL,
   PAIRINGS,
   PALETTE,
+  SCRIMS,
   WITHHELD,
 } from "@/lib/tokens";
 
@@ -63,6 +64,18 @@ describe("operational colours clear the floor on white", () => {
     it(`${o.label} is ${o.stated}:1 on white`, () => {
       expect(ratio(o.fg, PALETTE.surface)).toBeCloseTo(o.stated, 1);
       expect(ratio(o.fg, PALETTE.surface)).toBeGreaterThanOrEqual(4.5);
+    });
+  }
+});
+
+describe("scrims hold white type over the brightest frame possible", () => {
+  for (const s of SCRIMS) {
+    it(`${s.label} is ${s.stated}:1 over a white frame`, () => {
+      // Pure white is the worst a photograph can do to white type, so a scrim
+      // that clears the floor here clears it over any picture.
+      const ground = composite(PALETTE.ink, s.alpha, PALETTE.surface);
+      expect(ratio(PALETTE.surface, ground)).toBeCloseTo(s.stated, 1);
+      expect(ratio(PALETTE.surface, ground)).toBeGreaterThanOrEqual(4.5);
     });
   }
 });

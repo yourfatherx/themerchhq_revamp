@@ -147,7 +147,6 @@ export default async function WorkPage() {
       </Step>
 
       <PhotoBand
-        tone="ink"
         src="/studio/packing-bench.jpg"
         alt="An order being boxed and tied at the packing bench"
         title="Printed, packed and handed over"
@@ -210,7 +209,7 @@ export default async function WorkPage() {
       </section>
 
       <PhotoBand
-        tone="brand"
+        emphasis
         src="/studio/dispatch-boxes.jpg"
         alt="Rows of open cartons waiting to be filled"
         title="Be the first campaign"

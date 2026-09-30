@@ -51,7 +51,6 @@ export default async function Home() {
         />
         <PhotoBand
           half
-          tone="brand"
           src="/studio/share-link.jpg"
           alt="A person in a white shirt tapping on a phone"
           title="One link for the group"
@@ -64,7 +63,6 @@ export default async function Home() {
       <ProductGridBand title="Everything else we make" items={everythingElse.slice(0, 4)} />
 
       <PhotoBand
-        tone="ink"
         src="/studio/packing-bench.jpg"
         alt="An order being boxed and tied at the packing bench"
         title="What a run produces"
@@ -80,7 +78,7 @@ export default async function Home() {
         cta="About us"
       />
       <PhotoBand
-        tone="brand"
+        emphasis
         src="/studio/brief.jpg"
         alt="An open notebook and pen in front of a laptop on a wooden table"
         title="Start with a headcount"

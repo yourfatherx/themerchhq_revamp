@@ -155,7 +155,6 @@ export default async function AboutPage() {
         />
         <PhotoBand
           half
-          tone="ink"
           src="/studio/print-press.jpg"
           alt="A screen printing carousel on the shop floor"
           title="Bengaluru and Tiruppur"
@@ -244,7 +243,7 @@ export default async function AboutPage() {
       </section>
 
       <PhotoBand
-        tone="brand"
+        emphasis
         src="/studio/folded-stack.jpg"
         alt="Blank tees in four colourways, fanned out on a white ground"
         title="Tell us the date and the headcount"

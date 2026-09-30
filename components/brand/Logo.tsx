@@ -10,8 +10,11 @@ import Image from "next/image";
  * no photo edge enters it. That is a layout responsibility of the caller; this
  * component does not add padding of its own.
  *
- * The logo is never placed on a photograph — on imagery it sits on a solid blue
- * or white block, never straight on the picture and never on a blurred panel.
+ * The logo is never placed straight on a photograph, and never on a blurred
+ * panel. The one exception is the site header over the home hero, where it sits
+ * on that hero's scrim — an even ground of at least 62% ink across the whole
+ * frame, which is a solid block in everything but name. Anywhere else, imagery
+ * needs a real blue or white block behind the lockup.
  */
 
 type Variant = "stacked" | "horizontal" | "mark" | "wordmark";

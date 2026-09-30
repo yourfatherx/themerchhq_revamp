@@ -102,10 +102,11 @@ export default function HowItWorksPage() {
       </div>
 
       <div className="grid lg:grid-cols-2">
-        {/* The one step that is actually the organiser's. */}
+        {/* The one step that is actually the organiser's. It used to be marked
+            by a blue card; with the captions set on the photographs there is no
+            ground left to change, so the title carries it alone. */}
         <PhotoBand
           half
-          tone="brand"
           src="/studio/share-link.jpg"
           alt="A person in a white shirt tapping on a phone"
           title="Share one link"
@@ -136,7 +137,7 @@ export default function HowItWorksPage() {
       </section>
 
       <PhotoBand
-        tone="brand"
+        emphasis
         src="/studio/packing-bench.jpg"
         alt="An order being boxed and tied at the packing bench"
         title="Tell us the date and the headcount"

@@ -19,9 +19,13 @@ import { PromoTicker } from "./PromoTicker";
  * scroll up — a store whose way to the quote form disappears for the length of
  * the page is paying for its minimalism in enquiries.
  *
- * The logo never sits on a photograph: over the hero it is the white lockup on
- * a solid New Car block, which is the brand book's rule for logos on imagery.
- * On white it is the blue lockup with nothing behind it.
+ * Over the hero the logo is the white lockup with nothing behind it, and on
+ * white it is the blue lockup, likewise. It used to sit on a solid New Car
+ * block over the hero, per the brand book's rule for logos on imagery; that
+ * block read as a sticker on the photograph and has been dropped by decision.
+ * What makes it safe is the hero's own scrim, which is never lighter than 62%
+ * ink anywhere in the frame — the lockup is on a dark, even ground, not on the
+ * picture. It is the only place in the system the logo is used this way.
  *
  * Pages other than home get a spacer of the header's height, so their first
  * line is never tucked underneath it.
@@ -115,15 +119,12 @@ export function SiteHeader({ preview = false }: { preview?: boolean }) {
             <Link
               href="/"
               aria-label="The Merch HQ — home"
-              className={cn(
-                "flex items-center rounded-sm transition-colors duration-150 ease-brand",
-                clear ? "bg-brand px-3 py-2.5" : "px-0 py-2.5",
-              )}
+              className="flex items-center py-2.5"
             >
               <Logo
                 variant="horizontal"
                 tone={clear ? "white" : "blue"}
-                width={148}
+                width={176}
                 alt=""
                 preload
               />
