@@ -2,8 +2,15 @@ import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
 
 /**
- * Resolution Blue panel · white lockup · links in Lavender at 8.01:1 · four
- * columns collapsing to two, then one.
+ * White ground · link columns on the left · the lockup set large on the right.
+ *
+ * The oversized closing mark is the layout's signature, but our mark is placed
+ * artwork, not type, so it is shown whole and never cropped by the page edge,
+ * with its clear space kept on every side. It never renders above its native
+ * 1062px width, so it is never upscaled past the artwork's resolution.
+ *
+ * Headings are ink, links Ink Gray (6.58:1 on white). Four link columns at
+ * desktop, two below.
  *
  * This is our own footer. On a client storefront the footer is theirs — see
  * `StorefrontFooterMark`.
@@ -29,83 +36,77 @@ const COLUMNS = [
       { href: "/quote", label: "Request a quote" },
     ],
   },
+  {
+    heading: "Talk to a human",
+    links: [
+      { href: "mailto:hello@themerchhq.in", label: "hello@themerchhq.in" },
+      { href: "tel:+918047182200", label: "+91 80 4718 2200" },
+    ],
+    note: "Bengaluru · Tiruppur",
+  },
+  {
+    heading: "The small print",
+    links: [
+      { href: "/privacy", label: "Privacy" },
+      { href: "/terms", label: "Terms" },
+      { href: "/gst", label: "GST & invoicing" },
+    ],
+  },
 ] as const;
+
+const linkClass =
+  "text-[14px] font-medium tracking-[-0.01em] text-ink-muted no-underline transition-opacity duration-150 ease-brand hover:text-ink-muted hover:no-underline hover:opacity-70";
 
 export function SiteFooter() {
   return (
-    <footer className="bg-ink">
-      <div className="mx-auto max-w-[1280px] px-5 py-16 sm:px-8">
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
-          <div className="lg:col-span-2">
-            <Logo variant="horizontal" tone="white" width={180} alt="" />
-            <p className="t-body-sm mt-5 max-w-[46ch] text-white/70">
-              Merch and gifting for colleges, clubs and companies. We host the
-              storefront, collect the orders and the money, and hand you the
-              numbers.
-            </p>
-          </div>
-
+    <footer className="border-t border-hairline bg-surface">
+      <div className="flex flex-col gap-16 px-5 pt-20 pb-10 lg:flex-row lg:items-end lg:gap-16 lg:pt-24">
+        <div className="grid grid-cols-2 gap-x-10 gap-y-10 sm:grid-cols-4 lg:shrink-0">
           {COLUMNS.map((col) => (
             <nav key={col.heading} aria-label={col.heading}>
-              <h2 className="text-[14px] font-semibold text-white/60">{col.heading}</h2>
-              <ul className="mt-4 space-y-3">
-                {col.links.map((l) => (
-                  <li key={l.href}>
-                    <Link
-                      href={l.href}
-                      className="t-body-sm text-white/70 no-underline hover:text-surface"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
+              <h2 className="text-[14px] font-semibold tracking-[-0.01em] text-ink">
+                {col.heading}
+              </h2>
+              <ul className="mt-3 space-y-2">
+                {col.links.map((l) =>
+                  l.href.startsWith("/") ? (
+                    <li key={l.href}>
+                      <Link href={l.href} className={linkClass}>
+                        {l.label}
+                      </Link>
+                    </li>
+                  ) : (
+                    <li key={l.href}>
+                      <a href={l.href} className={linkClass}>
+                        {l.label}
+                      </a>
+                    </li>
+                  ),
+                )}
+                {"note" in col ? (
+                  <li className="text-[14px] tracking-[-0.01em] text-ink-muted">{col.note}</li>
+                ) : null}
               </ul>
             </nav>
           ))}
-
-          <div>
-            <h2 className="text-[14px] font-semibold text-white/60">Talk to a human</h2>
-            <ul className="mt-4 space-y-3">
-              <li>
-                <a
-                  href="mailto:hello@themerchhq.in"
-                  className="t-body-sm text-white/70 no-underline hover:text-surface"
-                >
-                  hello@themerchhq.in
-                </a>
-              </li>
-              <li>
-                <a
-                  href="tel:+918047182200"
-                  className="figure t-body-sm text-white/70 no-underline hover:text-surface"
-                >
-                  +91 80 4718 2200
-                </a>
-              </li>
-              <li className="t-body-sm text-white/70">Bengaluru · Tiruppur</li>
-            </ul>
-          </div>
         </div>
 
-        <div className="mt-14 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/15 pt-6">
-          <p className="t-body-sm text-white/70">© 2026 The Merch HQ</p>
-          <nav aria-label="Legal" className="flex flex-wrap gap-x-6 gap-y-2">
-            {[
-              { href: "/privacy", label: "Privacy" },
-              { href: "/terms", label: "Terms" },
-              { href: "/gst", label: "GST & invoicing" },
-            ].map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="t-body-sm text-white/70 no-underline hover:text-surface"
-              >
-                {l.label}
-              </Link>
-            ))}
-          </nav>
+        {/* Clear space: the padding around the artwork is never less than its
+            cap height, so nothing in the row above can crowd it. */}
+        <div className="flex min-w-0 grow justify-end">
+          <Logo
+            variant="horizontal"
+            tone="blue"
+            width={1062}
+            alt="The Merch HQ"
+            className="h-auto w-full max-w-[1062px] p-[2.2%]"
+          />
         </div>
       </div>
+
+      <p className="border-t border-hairline px-5 py-5 text-[13px] text-ink-muted">
+        © 2026 The Merch HQ
+      </p>
     </footer>
   );
 }

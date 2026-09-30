@@ -10,6 +10,9 @@ const grotesk = Instrument_Sans({
   variable: "--font-grotesk",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  // Italic carries the accent words in display headlines — the one contrast of
+  // voice inside a single family, in place of a second typeface.
+  style: ["normal", "italic"],
   display: "swap",
 });
 
