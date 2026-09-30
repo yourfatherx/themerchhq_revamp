@@ -16,6 +16,12 @@ import { cn } from "@/lib/cn";
  *
  * `half` bands are laid out in pairs by the caller: side by side at desktop,
  * stacked below it.
+ *
+ * `href`/`cta` are optional together. A band that narrates a step — one of four
+ * in a sequence — is explaining, not asking, and four buttons down one page is
+ * the repetition we take out of pages rather than add to them. Pass both to get
+ * a link, neither to get a plain caption; passing one without the other is a
+ * type error rather than a silently missing control.
  */
 
 type Tone = "surface" | "ink" | "brand";
@@ -35,6 +41,17 @@ const TONES: Record<Tone, { card: string; link: string }> = {
   },
 };
 
+type PhotoBandProps = {
+  src: string;
+  alt: string;
+  title: string;
+  body?: string;
+  tone?: Tone;
+  half?: boolean;
+  /** CSS object-position, to keep a subject in frame on narrow screens. */
+  position?: string;
+} & ({ href: string; cta: string } | { href?: never; cta?: never });
+
 export function PhotoBand({
   src,
   alt,
@@ -45,18 +62,7 @@ export function PhotoBand({
   tone = "surface",
   half = false,
   position = "center",
-}: {
-  src: string;
-  alt: string;
-  title: string;
-  body?: string;
-  href: string;
-  cta: string;
-  tone?: Tone;
-  half?: boolean;
-  /** CSS object-position, to keep a subject in frame on narrow screens. */
-  position?: string;
-}) {
+}: PhotoBandProps) {
   const t = TONES[tone];
 
   return (
@@ -81,15 +87,17 @@ export function PhotoBand({
           {body ? (
             <p className="mt-2 text-[15px] leading-[1.45] tracking-[-0.01em] opacity-90">{body}</p>
           ) : null}
-          <Link
-            href={href}
-            className={cn(
-              "mt-5 inline-flex h-10 items-center rounded-full border px-5 text-[14px] font-medium no-underline transition-colors duration-150 ease-brand hover:no-underline",
-              t.link,
-            )}
-          >
-            {cta}
-          </Link>
+          {href && cta ? (
+            <Link
+              href={href}
+              className={cn(
+                "mt-5 inline-flex h-10 items-center rounded-full border px-5 text-[14px] font-medium no-underline transition-colors duration-150 ease-brand hover:no-underline",
+                t.link,
+              )}
+            >
+              {cta}
+            </Link>
+          ) : null}
         </div>
       </div>
     </section>
