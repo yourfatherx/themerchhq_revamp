@@ -32,6 +32,23 @@ Absolutely no text, no writing, no logos, no brand marks, and no printed or embr
 kind — the item is completely blank and undecorated. No props, no hands, no models, no packaging.
 Photographic realism, sharp focus.`;
 
+/**
+ * Vessels are shot standing, not flat.
+ *
+ * Everything else in the set is a true overhead flat-lay, and drinkware was
+ * shot the same way at first. It was wrong twice over: a mug on its side reads
+ * as knocked over rather than photographed, and a cylinder lying across a 4:5
+ * portrait plate leaves most of the tile empty. Standing upright fills it.
+ */
+const UPRIGHT = new Set(["steel-bottle", "ceramic-mug", "vacuum-tumbler"]);
+
+const OVERHEAD = "Shot square-on from directly overhead.";
+const STANDING =
+  "The item stands upright on its own base, photographed straight on from the " +
+  "front at its own height. Not from above, no downward angle, no tilt.";
+
+const STYLE_UPRIGHT = STYLE.replace(OVERHEAD, STANDING);
+
 // FLUX follows short prompts best; the Space's own docs cap guidance at ~60-70 words.
 // Keep the camera angle and the "no hard shadow" clause — dropping them lets FLUX drift
 // into angled, directionally-lit hero shots that do not sit in a grid with the others.
@@ -52,7 +69,7 @@ const ITEMS = {
   "canvas-tote":
     "Overhead flat-lay product photo of a blank natural undyed cotton canvas tote bag, laid flat with both handles in smooth symmetrical loops above the bag body, heavy canvas weave, reinforced stitching at the handle joints.",
   "steel-bottle":
-    "Overhead product photo of a blank matte white insulated stainless steel water bottle with a brushed steel screw cap, lying horizontally, centred, clean cylindrical form with a soft highlight along its length.",
+    "Product photo of a blank matte white insulated stainless steel water bottle standing upright on its base, brushed steel screw cap closed on top, tall clean cylindrical form filling the height of the frame, one soft highlight down its length.",
   "sticker-sheet":
     "Overhead flat-lay photo of a blank sheet of glossy white weatherproof vinyl sticker stock lying flat, with kiss-cut outlines of plain circles, rounded squares and rounded rectangles visible as faint cut lines only, all empty.",
   "enamel-pin":
@@ -86,9 +103,9 @@ const ITEMS = {
   "daypack":
     "Overhead flat-lay product photo of a blank black polyester daypack backpack laid flat and facing up, shoulder straps tucked out of sight beneath it, main zip closed, one flat front pocket.",
   "ceramic-mug":
-    "Overhead product photo of a blank white glazed ceramic mug lying on its side, centred horizontally, the handle in clean profile, smooth even glaze with one soft highlight.",
+    "Product photo of a blank white glazed ceramic mug standing upright on its base, the handle turned to the right in clean profile, rim level and closed to the viewer, smooth even glaze with one soft highlight.",
   "vacuum-tumbler":
-    "Overhead product photo of a blank matte white stainless steel vacuum tumbler lying horizontally, centred, gently tapered cylindrical body with a clear sliding lid.",
+    "Product photo of a blank matte white stainless steel vacuum tumbler standing upright on its base, clear sliding lid closed on top, gently tapered cylindrical body filling the height of the frame.",
   "a5-notebook":
     "Overhead flat-lay photo of a blank black softcover A5 notebook lying closed and perfectly flat, plain uncoated cover, subtle stitched spine, completely empty.",
   "lanyard-set":
@@ -121,14 +138,18 @@ async function resolveProvider() {
 }
 
 async function generate(provider, name, description) {
+  const style = UPRIGHT.has(name) ? STYLE_UPRIGHT : STYLE;
   const { buffer, ext } =
     provider.name === "hf"
-      ? await viaHuggingFace(`${description} ${STYLE_SHORT}`, provider.key)
+      ? await viaHuggingFace(
+          `${description} ${UPRIGHT.has(name) ? STYLE_SHORT.replace("Top-down flat-lay, camera directly overhead, perfectly square-on, no perspective\ntilt.", STANDING) : STYLE_SHORT}`,
+          provider.key,
+        )
       : provider.name === "codex"
-        ? await viaCodex(`${description}\n\n${STYLE}`)
+        ? await viaCodex(`${description}\n\n${style}`)
         : provider.name === "gemini"
-          ? await viaGemini(provider.key, `${description}\n\n${STYLE}`)
-          : await viaOpenRouter(provider.key, `${description}\n\n${STYLE}`);
+          ? await viaGemini(provider.key, `${description}\n\n${style}`)
+          : await viaOpenRouter(provider.key, `${description}\n\n${style}`);
 
   const path = join(OUT_DIR, `${name}.${ext}`);
   await writeFile(path, buffer);
