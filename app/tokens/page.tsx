@@ -63,7 +63,7 @@ export default function TokensPage() {
     <main>
       <header className="border-b border-hairline px-5 py-14 sm:px-8">
         <div className="mx-auto max-w-[1280px]">
-          <Logo variant="horizontal" tone="blue" width={200} priority />
+          <Logo variant="horizontal" tone="blue" width={200} preload />
           <h1 className="t-h1 mt-8 max-w-[22ch] text-ink">
             Every ratio here is measured, not estimated
           </h1>

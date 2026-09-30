@@ -81,7 +81,7 @@ export function ProductPlate({
   alt,
   colour,
   className,
-  priority,
+  preload,
   square,
   children,
 }: {
@@ -91,7 +91,7 @@ export function ProductPlate({
   /** Garment colour name, e.g. "Navy". Grounds the plate when there is no photo. */
   colour?: string | null;
   className?: string;
-  priority?: boolean;
+  preload?: boolean;
   /** Square corners, for our own marketing grids. Storefronts keep radius lg.
    *  A prop rather than a class: `cn` is a plain join, so a `rounded-none`
    *  passed in would sit beside `rounded-lg` and lose to source order. */
@@ -117,7 +117,7 @@ export function ProductPlate({
           fill
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
           className="object-contain"
-          priority={priority}
+          preload={preload}
         />
       ) : (
         <div className="absolute inset-0 grid place-items-center">

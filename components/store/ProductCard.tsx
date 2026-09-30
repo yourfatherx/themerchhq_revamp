@@ -27,7 +27,7 @@ export function ProductCard({
   facts = [],
   colours = [],
   unavailable = false,
-  priority,
+  preload,
 }: {
   href: string;
   name: string;
@@ -41,7 +41,7 @@ export function ProductCard({
   /** Colour names offered, for the swatch row. */
   colours?: readonly string[];
   unavailable?: boolean;
-  priority?: boolean;
+  preload?: boolean;
 }) {
   const dark = isPlateDark(colour, Boolean(imageSrc));
   const overlay = dark ? "text-white/75" : "text-ink-muted";
@@ -59,7 +59,7 @@ export function ProductCard({
         src={imageSrc}
         alt={name}
         colour={colour}
-        priority={priority}
+        preload={preload}
         // The only hover the card has. No lift, no shadow, no border change —
         // the image itself answers, which is what a catalogue of photographs
         // should do.

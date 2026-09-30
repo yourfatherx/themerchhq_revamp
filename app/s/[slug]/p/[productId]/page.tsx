@@ -46,7 +46,7 @@ export default async function ProductPage({
           <ProductPlate
             src={product.images[0]}
             alt={product.name}
-            priority
+            preload
           />
         </div>
 

@@ -125,7 +125,7 @@ export function SiteHeader({ preview = false }: { preview?: boolean }) {
                 tone={clear ? "white" : "blue"}
                 width={148}
                 alt=""
-                priority
+                preload
               />
             </Link>
 

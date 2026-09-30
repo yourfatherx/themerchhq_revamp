@@ -29,7 +29,7 @@ const SURFACES = [
 export default function BuildIndex() {
   return (
     <main className="mx-auto w-full max-w-[880px] px-5 py-16 sm:px-8 sm:py-24">
-      <Logo variant="horizontal" tone="blue" width={200} priority />
+      <Logo variant="horizontal" tone="blue" width={200} preload />
 
       <div className="mt-10">
         <Pill>Build index</Pill>

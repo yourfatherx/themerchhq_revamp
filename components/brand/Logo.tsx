@@ -55,7 +55,7 @@ type LogoProps<V extends Variant> = {
   width: number;
   /** Empty when the logo is decorative or the name is already adjacent. */
   alt?: string;
-  priority?: boolean;
+  preload?: boolean;
   className?: string;
 };
 
@@ -64,7 +64,7 @@ export function Logo<V extends Variant>({
   tone,
   width,
   alt = "The Merch HQ",
-  priority,
+  preload,
   className,
 }: LogoProps<V>) {
   const art = ART[variant];
@@ -83,7 +83,7 @@ export function Logo<V extends Variant>({
       alt={alt}
       width={width}
       height={Math.round((width * art.h) / art.w)}
-      priority={priority}
+      preload={preload}
       className={className}
     />
   );

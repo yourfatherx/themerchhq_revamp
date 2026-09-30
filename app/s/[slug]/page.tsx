@@ -158,7 +158,7 @@ export default async function StorefrontHome({
                   colour={colours[0]}
                   colours={colours}
                   facts={[p.printSpec, `${sizes} ${sizes === 1 ? "size" : "sizes"}`]}
-                  priority={i === 0}
+                  preload={i === 0}
                   unavailable={!gate.open}
                 />
               );

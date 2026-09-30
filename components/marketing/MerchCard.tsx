@@ -41,7 +41,7 @@ export function MerchCard({
           src={item.image}
           alt={item.name}
           colour={item.colours[0]}
-          priority={preload}
+          preload={preload}
         >
           <span className="absolute top-3 left-3 rounded-full bg-surface px-2.5 py-1 text-[12px] font-medium tracking-[-0.01em] text-ink">
             {item.category}
