@@ -10,6 +10,18 @@ whole set with no arguments. Always run `node scripts/normalize-product-images.m
 afterwards — `ProductPlate` is a 4:5 tile painted `--color-plate`, and a raw
 generation is square on whatever grey the model chose.
 
+## Which provider made what
+
+Sixteen came from `IMAGE_PROVIDER=codex`, which is Codex CLI's own image tool
+billed to a ChatGPT subscription. It is the best of the three and the one to
+reach for, but it needs a **paid** plan — Codex refuses every model on a free
+one, so `codex login` has to be an account with a subscription.
+
+Eight garments came from the free Hugging Face provider, and the original two
+apparel shots plus the accessories from Gemini via OpenRouter. The Hugging Face
+Space is free but its ZeroGPU quota runs out after roughly eight images, and it
+is the one that invents brand labels.
+
 ## Two frames were altered after generation
 
 `cotton-polo.png` and `varsity-jacket.png` came back with an invented brand

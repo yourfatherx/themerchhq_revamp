@@ -164,11 +164,9 @@ const CATALOGUE: CatalogueItem[] = [
     ],
   },
 
-  // Apparel and Headwear below are photographed; Bags, Drinkware and Paper are
-  // not yet, so they carry no `image` and the plate renders their first stock
-  // colour instead. That is the designed fallback, not a gap to paper over with
-  // a stand-in photograph. The split is not editorial — the generator's free
-  // provider ran out of quota partway through the run.
+  // Every item below is photographed. `image` stays optional on the type all
+  // the same: a new product is added before it is shot, and the plate rendering
+  // its stock colour is the honest interim, not a stand-in photograph.
   //
   // The range is only extended into things we can decorate in-house on a blank.
   // The layout reference sells licensed outerwear, consumer electronics, wine
@@ -312,6 +310,7 @@ const CATALOGUE: CatalogueItem[] = [
 
   {
     slug: "drawstring-bag",
+    image: "/products/drawstring-bag.png",
     colours: ["Black", "Navy", "Red", "White"],
     leadDays: 9,
     name: "Drawstring bag",
@@ -327,6 +326,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "laptop-sleeve",
+    image: "/products/laptop-sleeve.png",
     colours: ["Charcoal", "Navy", "Oatmeal"],
     leadDays: 12,
     name: "Laptop sleeve",
@@ -342,6 +342,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "weekender-duffel",
+    image: "/products/weekender-duffel.png",
     colours: ["Black", "Navy", "Olive"],
     leadDays: 14,
     name: "Weekender duffel",
@@ -357,6 +358,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "daypack",
+    image: "/products/daypack.png",
     colours: ["Black", "Charcoal", "Navy"],
     leadDays: 14,
     name: "Daypack",
@@ -373,6 +375,7 @@ const CATALOGUE: CatalogueItem[] = [
 
   {
     slug: "ceramic-mug",
+    image: "/products/ceramic-mug.png",
     colours: ["White", "Black", "Navy"],
     leadDays: 10,
     name: "Ceramic mug",
@@ -388,6 +391,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "vacuum-tumbler",
+    image: "/products/vacuum-tumbler.png",
     colours: ["White", "Black", "Navy"],
     leadDays: 12,
     name: "Vacuum tumbler",
@@ -404,6 +408,7 @@ const CATALOGUE: CatalogueItem[] = [
 
   {
     slug: "a5-notebook",
+    image: "/products/a5-notebook.png",
     colours: ["Black", "Navy", "Natural"],
     leadDays: 10,
     name: "A5 notebook",
@@ -419,6 +424,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "lanyard-set",
+    image: "/products/lanyard-set.png",
     colours: ["Navy", "Black", "Red"],
     leadDays: 12,
     name: "Lanyard and ID holder",
@@ -434,6 +440,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "a2-poster",
+    image: "/products/a2-poster.png",
     colours: [],
     leadDays: 7,
     name: "A2 poster",
@@ -449,6 +456,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "postcard-pack",
+    image: "/products/postcard-pack.png",
     colours: [],
     leadDays: 7,
     name: "Postcard pack",
