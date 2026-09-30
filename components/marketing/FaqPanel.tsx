@@ -10,9 +10,9 @@
  * of prose nobody reads.
  *
  * The chevron is local to this file rather than imported: the panel needs one
- * 14px glyph, and owning it is what lets `Bits.tsx` go once the last page stops
- * importing it. It rotates rather than swapping glyph, so there is one mark for
- * one state.
+ * 14px glyph, and owning it is what let `Bits.tsx` go when the last page
+ * stopped importing it. It rotates rather than swapping glyph, so there is one
+ * mark for one state.
  */
 
 export type FaqItem = { q: string; a: string };
