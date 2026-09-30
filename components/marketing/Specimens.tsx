@@ -28,7 +28,7 @@ export function StorefrontSpecimen() {
     // depicting a storefront listing, and a listing shows the garment.
     <div className="relative min-h-[380px] overflow-hidden rounded-md bg-plate p-5">
       <Image
-        src="/products/heavyweight-hoodie.png"
+        src="/products/heavyweight-hoodie.webp"
         alt=""
         fill
         sizes="(min-width: 1024px) 40vw, 100vw"

@@ -37,7 +37,7 @@ export type CatalogueItem = {
 const CATALOGUE: CatalogueItem[] = [
   {
     slug: "heavyweight-hoodie",
-    image: "/products/heavyweight-hoodie.png",
+    image: "/products/heavyweight-hoodie.webp",
     colours: ["Navy", "Black", "Oatmeal", "Maroon", "Olive"],
     leadDays: 11,
     name: "Heavyweight hoodie",
@@ -53,7 +53,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "heavy-cotton-tee",
-    image: "/products/heavy-cotton-tee.png",
+    image: "/products/heavy-cotton-tee.webp",
     colours: ["Black", "White", "Navy", "Natural", "Maroon", "Olive"],
     leadDays: 9,
     name: "Heavy cotton tee",
@@ -69,7 +69,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "crew-sweatshirt",
-    image: "/products/crew-sweatshirt.png",
+    image: "/products/crew-sweatshirt.webp",
     colours: ["Oatmeal", "Navy", "Black", "Charcoal"],
     leadDays: 11,
     name: "Crew sweatshirt",
@@ -85,7 +85,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "campus-cap",
-    image: "/products/campus-cap.png",
+    image: "/products/campus-cap.webp",
     colours: ["Navy", "Black", "Natural"],
     leadDays: 12,
     name: "Campus cap",
@@ -101,7 +101,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "canvas-tote",
-    image: "/products/canvas-tote.png",
+    image: "/products/canvas-tote.webp",
     colours: ["Natural", "Black"],
     leadDays: 9,
     name: "Canvas tote",
@@ -117,7 +117,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "steel-bottle",
-    image: "/products/steel-bottle.png",
+    image: "/products/steel-bottle.webp",
     colours: ["White", "Black", "Navy"],
     leadDays: 12,
     name: "Insulated steel bottle",
@@ -133,7 +133,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "sticker-sheet",
-    image: "/products/sticker-sheet.png",
+    image: "/products/sticker-sheet.webp",
     colours: [],
     leadDays: 7,
     name: "Sticker sheet",
@@ -149,7 +149,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "enamel-pin",
-    image: "/products/enamel-pin.png",
+    image: "/products/enamel-pin.webp",
     colours: [],
     leadDays: 14,
     name: "Enamel pin set",
@@ -180,7 +180,7 @@ const CATALOGUE: CatalogueItem[] = [
 
   {
     slug: "oversized-tee",
-    image: "/products/oversized-tee.png",
+    image: "/products/oversized-tee.webp",
     colours: ["Black", "Oatmeal", "Olive", "White", "Navy"],
     leadDays: 9,
     name: "Oversized drop-shoulder tee",
@@ -196,7 +196,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "long-sleeve-tee",
-    image: "/products/long-sleeve-tee.png",
+    image: "/products/long-sleeve-tee.webp",
     colours: ["Black", "White", "Navy", "Olive"],
     leadDays: 9,
     name: "Long-sleeve tee",
@@ -212,7 +212,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "cotton-polo",
-    image: "/products/cotton-polo.png",
+    image: "/products/cotton-polo.webp",
     colours: ["Navy", "White", "Black", "Bottle green"],
     leadDays: 11,
     name: "Cotton polo",
@@ -228,7 +228,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "zip-hoodie",
-    image: "/products/zip-hoodie.png",
+    image: "/products/zip-hoodie.webp",
     colours: ["Black", "Navy", "Charcoal", "Oatmeal"],
     leadDays: 12,
     name: "Zip-through hoodie",
@@ -244,7 +244,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "varsity-jacket",
-    image: "/products/varsity-jacket.png",
+    image: "/products/varsity-jacket.webp",
     colours: ["Navy", "Black", "Maroon"],
     leadDays: 14,
     name: "Varsity jacket",
@@ -260,7 +260,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "crew-socks",
-    image: "/products/crew-socks.png",
+    image: "/products/crew-socks.webp",
     colours: ["Black", "White", "Charcoal"],
     leadDays: 14,
     name: "Ribbed crew socks",
@@ -277,7 +277,7 @@ const CATALOGUE: CatalogueItem[] = [
 
   {
     slug: "bucket-hat",
-    image: "/products/bucket-hat.png",
+    image: "/products/bucket-hat.webp",
     colours: ["Black", "Navy", "Natural", "Olive"],
     leadDays: 12,
     name: "Bucket hat",
@@ -293,7 +293,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "ribbed-beanie",
-    image: "/products/ribbed-beanie.png",
+    image: "/products/ribbed-beanie.webp",
     colours: ["Black", "Charcoal", "Navy", "Maroon"],
     leadDays: 12,
     name: "Ribbed beanie",
@@ -310,7 +310,7 @@ const CATALOGUE: CatalogueItem[] = [
 
   {
     slug: "drawstring-bag",
-    image: "/products/drawstring-bag.png",
+    image: "/products/drawstring-bag.webp",
     colours: ["Black", "Navy", "Red", "White"],
     leadDays: 9,
     name: "Drawstring bag",
@@ -326,7 +326,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "laptop-sleeve",
-    image: "/products/laptop-sleeve.png",
+    image: "/products/laptop-sleeve.webp",
     colours: ["Charcoal", "Navy", "Oatmeal"],
     leadDays: 12,
     name: "Laptop sleeve",
@@ -342,7 +342,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "weekender-duffel",
-    image: "/products/weekender-duffel.png",
+    image: "/products/weekender-duffel.webp",
     colours: ["Black", "Navy", "Olive"],
     leadDays: 14,
     name: "Weekender duffel",
@@ -358,7 +358,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "daypack",
-    image: "/products/daypack.png",
+    image: "/products/daypack.webp",
     colours: ["Black", "Charcoal", "Navy"],
     leadDays: 14,
     name: "Daypack",
@@ -375,7 +375,7 @@ const CATALOGUE: CatalogueItem[] = [
 
   {
     slug: "ceramic-mug",
-    image: "/products/ceramic-mug.png",
+    image: "/products/ceramic-mug.webp",
     colours: ["White", "Black", "Navy"],
     leadDays: 10,
     name: "Ceramic mug",
@@ -391,7 +391,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "vacuum-tumbler",
-    image: "/products/vacuum-tumbler.png",
+    image: "/products/vacuum-tumbler.webp",
     colours: ["White", "Black", "Navy"],
     leadDays: 12,
     name: "Vacuum tumbler",
@@ -408,7 +408,7 @@ const CATALOGUE: CatalogueItem[] = [
 
   {
     slug: "a5-notebook",
-    image: "/products/a5-notebook.png",
+    image: "/products/a5-notebook.webp",
     colours: ["Black", "Navy", "Natural"],
     leadDays: 10,
     name: "A5 notebook",
@@ -424,7 +424,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "lanyard-set",
-    image: "/products/lanyard-set.png",
+    image: "/products/lanyard-set.webp",
     colours: ["Navy", "Black", "Red"],
     leadDays: 12,
     name: "Lanyard and ID holder",
@@ -440,7 +440,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "a2-poster",
-    image: "/products/a2-poster.png",
+    image: "/products/a2-poster.webp",
     colours: [],
     leadDays: 7,
     name: "A2 poster",
@@ -456,7 +456,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "postcard-pack",
-    image: "/products/postcard-pack.png",
+    image: "/products/postcard-pack.webp",
     colours: [],
     leadDays: 7,
     name: "Postcard pack",

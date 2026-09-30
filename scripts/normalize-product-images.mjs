@@ -52,12 +52,16 @@ function sampleGround(data, width, height) {
   return sum.map((v) => v / n);
 }
 
-// Hugging Face — the generator's default provider — returns WebP, and the
-// catalogue asks for .png. Take both and always write .png, so the two scripts
-// actually chain instead of silently skipping everything the default produced.
+// Take whatever the generators emit — Gemini and Codex return PNG, Hugging
+// Face returns WebP — and always write WebP.
+//
+// These are photographs, and PNG is the wrong container for one: the set came
+// to 24 MB as PNG and 1.6 MB as WebP, with no difference anyone can see on a
+// 4:5 plate. That is not only a page-weight argument, it is what fits the
+// deploy under its archive limit.
 for (const file of (await readdir(DIR)).filter((f) => /\.(png|webp)$/.test(f))) {
   const path = `${DIR}/${file}`;
-  const out_path = path.replace(/\.webp$/, ".png");
+  const out_path = path.replace(/\.png$/, ".webp");
   // Decode from a buffer, not the path: on Windows sharp keeps the input file
   // open, and the WebP then cannot be unlinked once its PNG is written.
   let base = sharp(await readFile(path)).removeAlpha();
@@ -110,9 +114,12 @@ for (const file of (await readdir(DIR)).filter((f) => /\.(png|webp)$/.test(f))) 
     });
   }
 
-  const png = await out.png({ compressionLevel: 9 }).toBuffer();
-  await writeFile(out_path, png);
-  // Drop the WebP only once its PNG is safely written.
+  // Quality 92 because this file is re-runnable: a lower setting would visibly
+  // soften an image that gets normalised twice, since the second pass
+  // recompresses the first pass's output rather than the original.
+  const encoded = await out.webp({ quality: 92, effort: 6 }).toBuffer();
+  await writeFile(out_path, encoded);
+  // Drop the PNG only once its WebP is safely written.
   if (out_path !== path) await unlink(path);
 
   console.log(

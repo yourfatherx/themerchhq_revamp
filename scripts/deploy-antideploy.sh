@@ -21,6 +21,17 @@
 #   .git, node_modules    per Antideploy's own example.
 #   .next, *.tsbuildinfo  build output, rebuilt on their side.
 #   .claude/              agent configuration, not application code.
+#   docs/                 33 MB, nearly all of it the layout reference's own
+#                         captures — full-page screenshots of a third-party
+#                         Framer template. They are working material for us and
+#                         publishing them would be republishing someone else's
+#                         site, so this exclusion is not negotiable for size
+#                         reasons later.
+#   brag-output/          6 MB of rendered launch video and its working files.
+#   "Claude outputs/"     Neither is imported by anything or served; they are
+#                         agent working directories that happen to sit in the
+#                         project root, and they are untracked, so nothing else
+#                         would have caught them.
 #
 # Usage: scripts/deploy-antideploy.sh
 set -euo pipefail
@@ -42,6 +53,7 @@ tar czf "$ARCHIVE" \
   --exclude='.env' --exclude='.env.*' \
   --exclude=.git --exclude=node_modules --exclude=.next \
   --exclude=design --exclude=.claude --exclude=tsconfig.tsbuildinfo \
+  --exclude=brag-output --exclude='Claude outputs' --exclude=docs \
   .
 
 # Refuse to send an archive that still contains a secret, rather than trusting
