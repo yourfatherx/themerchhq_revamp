@@ -8,6 +8,18 @@ export const metadata: Metadata = {
     "Tell us the headcount and the date. We come back with a per-unit price and a delivery date you can hold us to.",
 };
 
+/**
+ * MKT-6, restyled into the storefront layout.
+ *
+ * The shell only: `QuoteForm` and the server action behind it are untouched.
+ * This page changes its gutter, its type scale and the aside's ground, and
+ * nothing that decides what a submitted quote contains.
+ *
+ * No closing band here, unlike the other marketing pages. Every one of them
+ * ends by pointing at this page; a band on this page pointing at this page is
+ * a loop, and the form is already the ask.
+ */
+
 const WHAT_HAPPENS = [
   {
     icon: "clock",
@@ -28,32 +40,39 @@ const WHAT_HAPPENS = [
 
 export default function QuotePage() {
   return (
-    <main className="mx-auto max-w-[1280px] px-5 py-14 sm:px-8 sm:py-20">
-      <h1 className="t-h1 mt-7 max-w-[20ch] text-ink">
-        Tell us the date and the headcount
-      </h1>
-      <p className="t-body-lg mt-4 max-w-[62ch] text-ink-muted">
-        Everything below takes about two minutes. No call is needed unless you
-        want one.
-      </p>
+    <main className="bg-surface pb-16">
+      <header className="px-4 pt-10 pb-8 sm:px-5 lg:pt-14">
+        <h1 className="max-w-[20ch] text-[clamp(32px,2.2vw+24px,56px)] leading-[1.02] font-semibold tracking-[-0.045em] text-ink uppercase">
+          Tell us the date{" "}
+          <em className="font-normal tracking-[-0.03em] normal-case">
+            and the headcount.
+          </em>
+        </h1>
+        <p className="mt-3 max-w-[60ch] text-[15px] leading-[1.45] tracking-[-0.01em] text-ink-muted">
+          Everything below takes about two minutes. No call is needed unless you
+          want one.
+        </p>
+      </header>
 
-      <div className="mt-14 grid gap-14 lg:grid-cols-[1fr_340px]">
+      <div className="grid gap-12 border-t border-hairline px-4 pt-10 sm:px-5 lg:grid-cols-[1fr_340px] lg:gap-14">
         <QuoteForm />
 
-        <aside className="lg:sticky lg:top-24 lg:self-start">
-          <div className="rounded-lg bg-surface-sunken p-6">
-            <h2 className="t-h4 text-ink">What happens next</h2>
-            <ul className="mt-6 space-y-6">
+        <aside className="lg:sticky lg:top-28 lg:self-start">
+          <div className="bg-canvas p-6">
+            <h2 className="text-[18px] leading-[1.25] font-medium tracking-[-0.03em] text-ink">
+              What happens next
+            </h2>
+            <ul className="mt-5 space-y-5">
               {WHAT_HAPPENS.map((w) => (
                 <li key={w.title} className="flex gap-3">
-                  <span className="mt-[2px] shrink-0 text-accent">
+                  <span className="mt-[3px] shrink-0 text-accent">
                     <Icon name={w.icon} size={20} />
                   </span>
                   <span>
-                    <span className="t-body-sm block font-medium text-ink">
+                    <span className="block text-[14px] leading-[1.4] font-medium tracking-[-0.02em] text-ink">
                       {w.title}
                     </span>
-                    <span className="t-body-sm block text-ink-muted">
+                    <span className="mt-0.5 block text-[14px] leading-[1.45] tracking-[-0.01em] text-ink-muted">
                       {w.body}
                     </span>
                   </span>
@@ -62,7 +81,7 @@ export default function QuotePage() {
             </ul>
           </div>
 
-          <p className="t-body-sm mt-6 text-ink-muted">
+          <p className="mt-6 text-[14px] leading-[1.45] tracking-[-0.01em] text-ink-muted">
             Would rather talk?{" "}
             <a href="mailto:hello@themerchhq.in">hello@themerchhq.in</a> or{" "}
             <a href="tel:+918047182200" className="figure">
