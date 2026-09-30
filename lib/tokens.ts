@@ -130,6 +130,20 @@ export const PAIRINGS = [
     label: "White on Chinese Black",
     use: "The primary button, the closing band, and type over hero media",
   },
+  {
+    fg: PALETTE.ink,
+    bg: PALETTE.canvas,
+    stated: 17.82,
+    label: "Ink on canvas",
+    use: "The heading of a block set aside on its own ground — a marketing Note, the quote page's aside",
+  },
+  {
+    fg: PALETTE.inkMuted,
+    bg: PALETTE.canvas,
+    stated: 6.3,
+    label: "Ink Gray on canvas",
+    use: "The prose inside one of those blocks",
+  },
 ] as const;
 
 /**

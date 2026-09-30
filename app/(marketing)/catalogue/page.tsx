@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { RollingText } from "@/components/marketing/RollingText";
 import { ProductPlate } from "@/components/store/ProductPlate";
-import { Alert } from "@/components/ui/Alert";
+import { Note } from "@/components/marketing/Note";
 import { getCatalogue, TIER_UNITS, categories } from "@/content/catalogue";
 import { formatINR } from "@/lib/money";
 
@@ -118,11 +118,11 @@ export default async function CataloguePage() {
       </div>
 
       <div className="mt-16 max-w-[70ch] px-4 sm:px-5">
-        <Alert tone="info" title="These are indicative, not a quote">
+        <Note title="These are indicative, not a quote">
           Final pricing depends on colours, print size and placement count, and
           on the delivery date. GST is added separately on the invoice. Send us
           the headcount and we&apos;ll come back with a fixed number.
-        </Alert>
+        </Note>
       </div>
     </main>
   );

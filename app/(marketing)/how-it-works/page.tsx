@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { FaqPanel } from "@/components/marketing/FaqPanel";
 import { PhotoBand } from "@/components/marketing/PhotoBand";
-import { Alert } from "@/components/ui/Alert";
+import { Note } from "@/components/marketing/Note";
 
 export const metadata: Metadata = {
   title: "How it works — The Merch HQ",
@@ -125,14 +125,11 @@ export default function HowItWorksPage() {
 
       <section className="px-4 pb-14 sm:px-5 lg:pb-20">
         <div className="max-w-[70ch]">
-          <Alert
-            tone="info"
-            title="If a campaign misses its minimum, nobody loses money"
-          >
+          <Note title="If a campaign misses its minimum, nobody loses money">
             Every campaign carries a stated policy before it opens: extend the
             close date, or refund every order in full. It is published on the
             storefront, so buyers know the terms before they pay.
-          </Alert>
+          </Note>
         </div>
       </section>
 

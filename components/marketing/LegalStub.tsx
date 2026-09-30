@@ -1,4 +1,4 @@
-import { Alert } from "@/components/ui/Alert";
+import { Note } from "@/components/marketing/Note";
 
 /**
  * A published route that admits it is not written yet.
@@ -47,11 +47,11 @@ export function LegalStub({
 
       <section className="border-t border-hairline px-4 pt-10 sm:px-5">
         <div className="max-w-[70ch]">
-          <Alert tone="info" title="This page is a placeholder, not a policy">
+          <Note title="This page is a placeholder, not a policy">
             The full text has not been written or reviewed yet. Nothing here is
             a term you can rely on. If you need the answer before we publish it,
             ask us directly and we will put it in writing for your run.
-          </Alert>
+          </Note>
         </div>
 
         <div className="mt-10 max-w-[70ch]">
