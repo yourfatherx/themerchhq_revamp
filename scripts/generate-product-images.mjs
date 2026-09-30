@@ -53,6 +53,46 @@ const ITEMS = {
     "Overhead flat-lay photo of a blank sheet of glossy white weatherproof vinyl sticker stock lying flat, with kiss-cut outlines of plain circles, rounded squares and rounded rectangles visible as faint cut lines only, all empty.",
   "enamel-pin":
     "Overhead photo of three small blank circular soft-enamel lapel pins, 25mm each, in a neat evenly spaced row, polished gold metal rims around flat plain enamel faces in navy, white and gold.",
+
+  // The eighteen added when the catalogue went from 8 products to 26. Each
+  // names the colour that item lists first in content/catalogue.ts, so the
+  // photograph agrees with the swatch a buyer sees beside it.
+  "oversized-tee":
+    "Overhead flat-lay product photo of a blank black oversized drop-shoulder t-shirt, laid flat with sleeves squared out to the sides, boxy relaxed cut, heavy opaque cotton jersey, ribbed collar.",
+  "long-sleeve-tee":
+    "Overhead flat-lay product photo of a blank black long-sleeve cotton t-shirt, laid flat with both sleeves extended straight out to the sides, ribbed collar and ribbed cuffs.",
+  "cotton-polo":
+    "Overhead flat-lay product photo of a blank navy blue cotton pique polo shirt, laid flat with short sleeves squared out, flat knitted collar, short buttoned placket.",
+  "zip-hoodie":
+    "Overhead flat-lay product photo of a blank black full-zip hooded sweatshirt, laid flat with the zip closed and running straight down the centre, hood spread flat, thick brushed fleece, ribbed cuffs and hem.",
+  "varsity-jacket":
+    "Overhead flat-lay product photo of a blank navy blue wool melton varsity jacket, laid flat with the snap front closed, ribbed striped collar, cuffs and hem, set-in sleeves folded slightly inward.",
+  "crew-socks":
+    "Overhead flat-lay product photo of a pair of blank black ribbed cotton crew socks laid flat side by side, neatly aligned and parallel, fine vertical rib knit texture visible.",
+  "bucket-hat":
+    "Overhead flat-lay product photo of a blank black washed cotton twill bucket hat seen from directly above, crown centred, the downward brim forming an even circle around it, visible topstitching.",
+  "ribbed-beanie":
+    "Overhead flat-lay product photo of a blank black ribbed knit beanie laid flat with the cuff folded up, chunky vertical rib texture.",
+  "drawstring-bag":
+    "Overhead flat-lay product photo of a blank black polyester drawstring gym sack laid flat, the cords drawn into neat symmetrical loops at the top corners, reinforced eyelets at the base.",
+  "laptop-sleeve":
+    "Overhead flat-lay product photo of a blank charcoal grey wool felt laptop sleeve laid flat and closed, plain rectangle with softly rounded corners, dense felt texture visible at the edges.",
+  "weekender-duffel":
+    "Overhead flat-lay product photo of a blank black polyester weekender duffel bag laid flat on its side, main zip closed and running the length of the top, twin carry handles laid neatly across the body.",
+  "daypack":
+    "Overhead flat-lay product photo of a blank black polyester daypack backpack laid flat and facing up, shoulder straps tucked out of sight beneath it, main zip closed, one flat front pocket.",
+  "ceramic-mug":
+    "Overhead product photo of a blank white glazed ceramic mug lying on its side, centred horizontally, the handle in clean profile, smooth even glaze with one soft highlight.",
+  "vacuum-tumbler":
+    "Overhead product photo of a blank matte white stainless steel vacuum tumbler lying horizontally, centred, gently tapered cylindrical body with a clear sliding lid.",
+  "a5-notebook":
+    "Overhead flat-lay photo of a blank black softcover A5 notebook lying closed and perfectly flat, plain uncoated cover, subtle stitched spine, completely empty.",
+  "lanyard-set":
+    "Overhead flat-lay product photo of a blank navy woven polyester lanyard arranged in a neat oval loop, with a clear plastic ID card holder attached at the bottom and a small metal clip.",
+  "a2-poster":
+    "Overhead flat-lay photo of one blank sheet of white matte poster paper lying perfectly flat in portrait orientation, clean square corners, completely empty with no print.",
+  "postcard-pack":
+    "Overhead flat-lay photo of a small neat stack of blank white uncoated postcards lying flat, slightly fanned so the edges of several cards show, all faces completely empty.",
 };
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

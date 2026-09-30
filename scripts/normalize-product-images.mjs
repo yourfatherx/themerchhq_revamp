@@ -18,7 +18,7 @@
 // re-derived from the photograph rather than from bars this script added.
 
 import sharp from "sharp";
-import { readdir, writeFile } from "node:fs/promises";
+import { readdir, readFile, unlink, writeFile } from "node:fs/promises";
 
 const DIR = "public/products";
 const PLATE = [0xef, 0xef, 0xf2]; // --color-plate in app/globals.css
@@ -52,9 +52,15 @@ function sampleGround(data, width, height) {
   return sum.map((v) => v / n);
 }
 
-for (const file of (await readdir(DIR)).filter((f) => f.endsWith(".png"))) {
+// Hugging Face — the generator's default provider — returns WebP, and the
+// catalogue asks for .png. Take both and always write .png, so the two scripts
+// actually chain instead of silently skipping everything the default produced.
+for (const file of (await readdir(DIR)).filter((f) => /\.(png|webp)$/.test(f))) {
   const path = `${DIR}/${file}`;
-  let base = sharp(path).removeAlpha();
+  const out_path = path.replace(/\.webp$/, ".png");
+  // Decode from a buffer, not the path: on Windows sharp keeps the input file
+  // open, and the WebP then cannot be unlinked once its PNG is written.
+  let base = sharp(await readFile(path)).removeAlpha();
   let meta = await base.metadata();
 
   if (meta.height > meta.width) {
@@ -105,7 +111,9 @@ for (const file of (await readdir(DIR)).filter((f) => f.endsWith(".png"))) {
   }
 
   const png = await out.png({ compressionLevel: 9 }).toBuffer();
-  await writeFile(path, png);
+  await writeFile(out_path, png);
+  // Drop the WebP only once its PNG is safely written.
+  if (out_path !== path) await unlink(path);
 
   console.log(
     `${file.padEnd(24)} ground ${hex(ground)} -> ${hex(PLATE)}  ${width}x${height} -> ${width}x${height + pad}`,

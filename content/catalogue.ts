@@ -164,9 +164,11 @@ const CATALOGUE: CatalogueItem[] = [
     ],
   },
 
-  // Everything below is awaiting its flat-lay, so it carries no `image` and the
-  // plate renders the first stock colour instead. That is the designed fallback,
-  // not a gap to paper over with a stand-in photograph.
+  // Apparel and Headwear below are photographed; Bags, Drinkware and Paper are
+  // not yet, so they carry no `image` and the plate renders their first stock
+  // colour instead. That is the designed fallback, not a gap to paper over with
+  // a stand-in photograph. The split is not editorial — the generator's free
+  // provider ran out of quota partway through the run.
   //
   // The range is only extended into things we can decorate in-house on a blank.
   // The layout reference sells licensed outerwear, consumer electronics, wine
@@ -180,6 +182,7 @@ const CATALOGUE: CatalogueItem[] = [
 
   {
     slug: "oversized-tee",
+    image: "/products/oversized-tee.png",
     colours: ["Black", "Oatmeal", "Olive", "White", "Navy"],
     leadDays: 9,
     name: "Oversized drop-shoulder tee",
@@ -195,6 +198,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "long-sleeve-tee",
+    image: "/products/long-sleeve-tee.png",
     colours: ["Black", "White", "Navy", "Olive"],
     leadDays: 9,
     name: "Long-sleeve tee",
@@ -210,6 +214,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "cotton-polo",
+    image: "/products/cotton-polo.png",
     colours: ["Navy", "White", "Black", "Bottle green"],
     leadDays: 11,
     name: "Cotton polo",
@@ -225,6 +230,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "zip-hoodie",
+    image: "/products/zip-hoodie.png",
     colours: ["Black", "Navy", "Charcoal", "Oatmeal"],
     leadDays: 12,
     name: "Zip-through hoodie",
@@ -240,6 +246,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "varsity-jacket",
+    image: "/products/varsity-jacket.png",
     colours: ["Navy", "Black", "Maroon"],
     leadDays: 14,
     name: "Varsity jacket",
@@ -255,6 +262,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "crew-socks",
+    image: "/products/crew-socks.png",
     colours: ["Black", "White", "Charcoal"],
     leadDays: 14,
     name: "Ribbed crew socks",
@@ -271,6 +279,7 @@ const CATALOGUE: CatalogueItem[] = [
 
   {
     slug: "bucket-hat",
+    image: "/products/bucket-hat.png",
     colours: ["Black", "Navy", "Natural", "Olive"],
     leadDays: 12,
     name: "Bucket hat",
@@ -286,6 +295,7 @@ const CATALOGUE: CatalogueItem[] = [
   },
   {
     slug: "ribbed-beanie",
+    image: "/products/ribbed-beanie.png",
     colours: ["Black", "Charcoal", "Navy", "Maroon"],
     leadDays: 12,
     name: "Ribbed beanie",
