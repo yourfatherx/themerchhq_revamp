@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>The Merch HQ — Launch</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      /* Instrument Sans, taken from the project's own Next build output so the
+         video uses the exact face the site ships. Variable, 400-700. */
+      @font-face {
+        font-family: "Instrument Sans";
+        src: url("assets/fonts/instrument-sans-alt.woff2") format("woff2");
+        font-weight: 400 700;
+        font-style: normal;
+        font-display: block;
+      }
+
+      :root {
+        --canvas: #f9fafb;
+        --surface: #ffffff;
+        --plate: #efeff2;
+        --ink: #13111f;
+        --ink-muted: #5a5c6e;
+        --accent: #1b52d7;
+        --hairline: rgb(0 0 0 / 0.1);
+      }
+
+      body {
+        margin: 0;
+        background: var(--canvas);
+        color: var(--ink);
+        font-family: "Instrument Sans", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: var(--canvas);
+      }
+
+      .clip {
+        position: absolute;
+        inset: 0;
+      }
+
+      .pad {
+        position: absolute;
+        inset: 0;
+        padding: 0 140px;
+        display: flex;
+        align-items: center;
+      }
+
+      .figure {
+        font-variant-numeric: tabular-nums;
+        font-weight: 500;
+      }
+
+      /* ---------- Scene 1 ---------- */
+      .claim {
+        font-size: 132px;
+        font-weight: 700;
+        letter-spacing: -0.035em;
+        line-height: 1.02;
+        margin: 0;
+      }
+      #s1-rule {
+        height: 10px;
+        width: 240px;
+        background: var(--accent);
+        border-radius: 999px;
+        margin-top: 56px;
+        transform-origin: left center;
+      }
+
+      /* ---------- shared scene furniture ---------- */
+      .col-copy {
+        width: 620px;
+        flex: 0 0 620px;
+      }
+      .eyebrow {
+        display: inline-block;
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: var(--accent);
+        border: 1px solid var(--hairline);
+        background: var(--surface);
+        border-radius: 999px;
+        padding: 10px 20px;
+        margin: 0 0 28px;
+      }
+      .scene-h {
+        font-size: 66px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.08;
+        margin: 0;
+      }
+      .scene-p {
+        font-size: 28px;
+        line-height: 1.45;
+        color: var(--ink-muted);
+        margin: 26px 0 0;
+        max-width: 17em;
+      }
+
+      /* ---------- Scene 2: storefront ---------- */
+      .plate {
+        position: relative;
+        margin-left: auto;
+        width: 720px;
+        height: 620px;
+        border-radius: 28px;
+        background: var(--plate);
+        display: flex;
+        align-items: flex-end;
+        padding: 40px;
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+      /* The real StorefrontSpecimen floats the card over the garment flat-lay,
+         which is also why the plate ground is #efeff2 — it is the colour the
+         product photography was shot against. */
+      #s2-flat {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* The card covers the plate's lower ~60%, so the crop is pulled down to
+           put the garment's body in the strip that stays visible above it.
+           `center top` lands on the flat-lay's empty #efeff2 ground. */
+        object-position: center 46%;
+        transform: scale(1.25);
+        transform-origin: center 40%;
+      }
+      .card {
+        width: 100%;
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 20px;
+        padding: 34px;
+        box-sizing: border-box;
+      }
+      .caption {
+        font-size: 21px;
+        color: var(--ink-muted);
+        margin: 0;
+      }
+      .card-title {
+        font-size: 42px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin: 14px 0 0;
+      }
+      .price {
+        font-size: 27px;
+        color: var(--ink-muted);
+        margin: 10px 0 0;
+      }
+      .price b {
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .chips {
+        display: flex;
+        gap: 14px;
+        margin-top: 30px;
+      }
+      .chip {
+        width: 62px;
+        height: 62px;
+        display: grid;
+        place-items: center;
+        border-radius: 14px;
+        border: 1px solid var(--hairline);
+        font-size: 24px;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+      }
+      .chip.on {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: var(--surface);
+      }
+      .closes {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid var(--hairline);
+        margin-top: 30px;
+        padding-top: 24px;
+        font-size: 24px;
+      }
+      .closes span:first-child {
+        color: var(--ink-muted);
+      }
+
+      /* ---------- Scene 3: size table ---------- */
+      .table-card {
+        margin-left: auto;
+        width: 880px;
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 22px;
+        padding: 40px 44px;
+        box-sizing: border-box;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        padding: 19px 0;
+        border-bottom: 1px solid var(--hairline);
+      }
+      .row .sz {
+        width: 74px;
+        flex: 0 0 74px;
+        font-size: 30px;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+      }
+      .row .track {
+        flex: 1 1 auto;
+      }
+      .row .bar {
+        height: 18px;
+        border-radius: 999px;
+        background: var(--accent);
+        transform-origin: left center;
+      }
+      .row .qty {
+        width: 84px;
+        flex: 0 0 84px;
+        text-align: right;
+        font-size: 32px;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+      }
+      .total {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding-top: 30px;
+        font-size: 40px;
+        font-weight: 700;
+      }
+      .total .n {
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* ---------- Scene 4: receipt ---------- */
+      .receipt-wrap {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+      }
+      .receipt {
+        width: 660px;
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 22px;
+        padding: 44px 48px;
+        box-sizing: border-box;
+      }
+      .r-line {
+        display: flex;
+        justify-content: space-between;
+        font-size: 27px;
+        margin-bottom: 20px;
+      }
+      .r-line span:first-child {
+        color: var(--ink-muted);
+      }
+      .r-line span:last-child {
+        font-variant-numeric: tabular-nums;
+        font-weight: 500;
+      }
+      .r-paid {
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid var(--hairline);
+        padding-top: 24px;
+        font-size: 36px;
+        font-weight: 700;
+      }
+      .r-paid span:last-child {
+        font-variant-numeric: tabular-nums;
+      }
+      .r-note {
+        font-size: 21px;
+        color: var(--ink-muted);
+        border-top: 1px solid var(--hairline);
+        margin: 30px 0 0;
+        padding-top: 26px;
+        line-height: 1.45;
+      }
+      #s4-head {
+        position: absolute;
+        top: 150px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 60px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0;
+      }
+
+      /* ---------- Scene 5: outro ---------- */
+      #s5-ground {
+        position: absolute;
+        inset: 0;
+        background: var(--ink);
+      }
+      .outro {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+      }
+      #s5-mark {
+        width: 420px;
+        height: auto;
+        display: block;
+      }
+      #s5-tag {
+        font-size: 76px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        color: var(--surface);
+        margin: 52px 0 0;
+      }
+      #s5-addr {
+        font-size: 28px;
+        color: rgb(255 255 255 / 0.72);
+        margin: 26px 0 0;
+        letter-spacing: 0.01em;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-width="1920"
+      data-height="1080"
+      data-duration="21.5"
+      data-fps="30"
+    >
+      <!-- ============ Scene 1 — the claim ============ -->
+      <section id="s1" class="clip" data-start="0" data-duration="4.2" data-track-index="0">
+        <div class="pad">
+          <div>
+            <h1 class="claim" id="s1-l1">250 hoodies.</h1>
+            <h1 class="claim" id="s1-l2">One link.</h1>
+            <h1 class="claim" id="s1-l3">No spreadsheet.</h1>
+            <div id="s1-rule"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Scene 2 — their own storefront ============ -->
+      <section id="s2" class="clip" data-start="4.2" data-duration="4.7" data-track-index="1">
+        <div class="pad">
+          <div class="col-copy">
+            <p class="eyebrow" id="s2-eye">Day 5</p>
+            <h2 class="scene-h" id="s2-h">Their own storefront.</h2>
+            <p class="scene-p" id="s2-p">
+              Live in five working days, on your own subdomain.
+            </p>
+          </div>
+          <div class="plate" id="s2-plate">
+            <!-- The scale crop deliberately overflows the plate, which clips it
+                 with overflow:hidden. The layout audit measures boxes rather
+                 than rendered pixels, so the overflow is declared here. Scoped
+                 to the <img> itself — it has no descendants, so this cannot
+                 silence a check on any real content. -->
+            <img
+              id="s2-flat"
+              src="assets/products/heavyweight-hoodie.png"
+              alt=""
+              data-layout-allow-overflow
+            />
+            <div class="card" id="s2-card">
+              <p class="caption" id="s2-sub">music-club.themerchhq.in</p>
+              <p class="card-title" id="s2-title">Hostel Night 2026</p>
+              <p class="price" id="s2-price">From <b>₹899</b></p>
+              <div class="chips">
+                <div class="chip" id="s2-c1">S</div>
+                <div class="chip" id="s2-c2">M</div>
+                <div class="chip on" id="s2-c3">L</div>
+                <div class="chip" id="s2-c4">XL</div>
+              </div>
+              <div class="closes" id="s2-closes">
+                <span>Closes in</span><span class="figure">9d 04h</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Scene 3 — the table that goes to print ============ -->
+      <section id="s3" class="clip" data-start="8.9" data-duration="5.3" data-track-index="2">
+        <div class="pad">
+          <div class="col-copy">
+            <p class="eyebrow" id="s3-eye">At close</p>
+            <h2 class="scene-h" id="s3-h">Every order carries its own size.</h2>
+            <p class="scene-p" id="s3-p">
+              At close it&rsquo;s a table, not a thread of corrections.
+            </p>
+          </div>
+          <div class="table-card" id="s3-card">
+            <div class="row" id="s3-r1">
+              <div class="sz">S</div>
+              <div class="track"><div class="bar" id="s3-b1" style="width: 17.6%"></div></div>
+              <div class="qty">12</div>
+            </div>
+            <div class="row" id="s3-r2">
+              <div class="sz">M</div>
+              <div class="track"><div class="bar" id="s3-b2" style="width: 60.3%"></div></div>
+              <div class="qty">41</div>
+            </div>
+            <div class="row" id="s3-r3">
+              <div class="sz">L</div>
+              <div class="track"><div class="bar" id="s3-b3" style="width: 100%"></div></div>
+              <div class="qty">68</div>
+            </div>
+            <div class="row" id="s3-r4">
+              <div class="sz">XL</div>
+              <div class="track"><div class="bar" id="s3-b4" style="width: 57.4%"></div></div>
+              <div class="qty">39</div>
+            </div>
+            <div class="row" id="s3-r5">
+              <div class="sz">2XL</div>
+              <div class="track"><div class="bar" id="s3-b5" style="width: 16.2%"></div></div>
+              <div class="qty">11</div>
+            </div>
+            <div class="total" id="s3-total">
+              <span>Total</span><span class="n">171</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Scene 4 — where the money goes ============ -->
+      <section id="s4" class="clip" data-start="14.2" data-duration="3.7" data-track-index="3">
+        <h2 id="s4-head">You never touch the money.</h2>
+        <div class="receipt-wrap">
+          <div class="receipt" id="s4-card">
+            <div class="r-line" id="s4-l1"><span>Hoodie &times; 1</span><span>&#8377;899.00</span></div>
+            <div class="r-line" id="s4-l2"><span>GST at 12%</span><span>&#8377;108.00</span></div>
+            <div class="r-paid" id="s4-paid"><span>Paid</span><span>&#8377;1,007.00</span></div>
+            <p class="r-note" id="s4-note">
+              Paid to The Merch HQ by UPI, not to an individual&rsquo;s account.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Scene 5 — merch, handled ============ -->
+      <section id="s5" class="clip" data-start="17.9" data-duration="3.6" data-track-index="4">
+        <div id="s5-ground"></div>
+        <div class="outro">
+          <img id="s5-mark" src="assets/brand/logo-horizontal-white.png" alt="The Merch HQ" />
+          <p id="s5-tag">Merch, handled.</p>
+          <p id="s5-addr">themerchhq.in</p>
+        </div>
+      </section>
+
+      <!-- ============ audio ============ -->
+      <!-- Bed: steady through, fades under the still outro rather than swelling into it. -->
+      <audio
+        id="bed"
+        src="assets/music/happy-beats-business-moves-vol-11-by-ende-dot-app.mp3"
+        data-start="0"
+        data-duration="21.5"
+        data-track-index="10"
+        data-volume="0.62"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.6,"v":0.62},{"t":20,"v":0.62},{"t":21.5,"v":0}]}]}'
+      ></audio>
+
+      <!-- Scene 1: three dry ticks, one per claim line. -->
+      <audio id="sfx-l1" src="assets/sfx/rollover2.ogg" data-start="0.5" data-duration="0.06" data-track-index="11" data-volume="0.5"></audio>
+      <audio id="sfx-l2" src="assets/sfx/rollover2.ogg" data-start="1.6" data-duration="0.06" data-track-index="11" data-volume="0.5"></audio>
+      <audio id="sfx-l3" src="assets/sfx/rollover2.ogg" data-start="2.65" data-duration="0.06" data-track-index="11" data-volume="0.5"></audio>
+
+      <!-- Scene 2: one light tick per size chip, then the closing timer. -->
+      <audio id="sfx-c1" src="assets/sfx/click2.ogg" data-start="5.8" data-duration="0.06" data-track-index="12" data-volume="0.4"></audio>
+      <audio id="sfx-c2" src="assets/sfx/click2.ogg" data-start="6.34" data-duration="0.06" data-track-index="12" data-volume="0.4"></audio>
+      <audio id="sfx-c3" src="assets/sfx/click2.ogg" data-start="6.86" data-duration="0.06" data-track-index="12" data-volume="0.4"></audio>
+      <audio id="sfx-c4" src="assets/sfx/click2.ogg" data-start="7.38" data-duration="0.06" data-track-index="12" data-volume="0.4"></audio>
+      <audio id="sfx-closes" src="assets/sfx/bong_001.ogg" data-start="7.91" data-duration="0.12" data-track-index="12" data-volume="0.34"></audio>
+
+      <!-- Scene 3: one warm tick per row (low HF risk — this repeats five times). -->
+      <audio id="sfx-r1" src="assets/sfx/bong_001.ogg" data-start="9.5" data-duration="0.12" data-track-index="13" data-volume="0.36"></audio>
+      <audio id="sfx-r2" src="assets/sfx/bong_001.ogg" data-start="10.01" data-duration="0.12" data-track-index="13" data-volume="0.38"></audio>
+      <audio id="sfx-r3" src="assets/sfx/bong_001.ogg" data-start="10.54" data-duration="0.12" data-track-index="13" data-volume="0.4"></audio>
+      <audio id="sfx-r4" src="assets/sfx/bong_001.ogg" data-start="11.06" data-duration="0.12" data-track-index="13" data-volume="0.42"></audio>
+      <audio id="sfx-r5" src="assets/sfx/bong_001.ogg" data-start="11.6" data-duration="0.12" data-track-index="13" data-volume="0.44"></audio>
+      <!-- The payoff. -->
+      <audio id="sfx-total" src="assets/sfx/impactSoft_medium_001.ogg" data-start="12.65" data-duration="0.18" data-track-index="14" data-volume="0.6"></audio>
+
+      <!-- Scene 4: one clean confirm on the paid total. Nothing on the line items. -->
+      <audio id="sfx-paid" src="assets/sfx/impactSoft_medium_003.ogg" data-start="16.34" data-duration="0.14" data-track-index="14" data-volume="0.46"></audio>
+
+      <!-- Scene 5: one dry hit as the ground flips to ink, then nothing. -->
+      <audio id="sfx-ink" src="assets/sfx/impactSoft_medium_004.ogg" data-start="17.91" data-duration="0.15" data-track-index="14" data-volume="0.54"></audio>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const E = "power3.out";
+
+      /* ---------------- Scene 1 — 0.0 to 4.2 ----------------
+         Three lines, each slamming in fast then holding. Spaced on every OTHER
+         beat (~1.05s at 114.84 BPM) so each clears the reading floor; the full
+         stack then holds ~1.0s before the cut. */
+      tl.from("#s1-l1", { yPercent: 115, opacity: 0, duration: 0.42, ease: E }, 0.5)
+        // beat-locked: 1.60s (strongCue 1.00)
+        .from("#s1-l2", { yPercent: 115, opacity: 0, duration: 0.42, ease: E }, 1.6)
+        // beat-grid: line 3 at 2.65s
+        .from("#s1-l3", { yPercent: 115, opacity: 0, duration: 0.42, ease: E }, 2.65)
+        .from("#s1-rule", { scaleX: 0, duration: 0.5, ease: "power2.out" }, 3.2);
+
+      /* ---------------- Scene 2 — 4.2 to 8.9 ----------------
+         The storefront assembles: plate, card, then the size chips one by one on
+         the beat grid, then the closing timer. */
+      tl.from("#s2-eye", { y: 22, opacity: 0, duration: 0.4, ease: E }, 4.45)
+        .from("#s2-h", { y: 30, opacity: 0, duration: 0.5, ease: E }, 4.6)
+        .from("#s2-p", { y: 24, opacity: 0, duration: 0.5, ease: E }, 4.85)
+        .from("#s2-plate", { y: 46, opacity: 0, duration: 0.6, ease: E }, 4.35)
+        .from("#s2-card", { y: 40, opacity: 0, duration: 0.55, ease: E }, 4.7)
+        .from("#s2-sub", { opacity: 0, duration: 0.35 }, 4.95)
+        .from("#s2-title", { y: 16, opacity: 0, duration: 0.4, ease: E }, 5.15)
+        .from("#s2-price", { y: 14, opacity: 0, duration: 0.4, ease: E }, 5.35)
+        // beat-grid: chips at 5.80 / 6.34 / 6.86 / 7.38 (consecutive beats, non-text accents)
+        .from("#s2-c1", { scale: 0.55, opacity: 0, duration: 0.34, ease: "back.out(2)" }, 5.8)
+        .from("#s2-c2", { scale: 0.55, opacity: 0, duration: 0.34, ease: "back.out(2)" }, 6.34)
+        .from("#s2-c3", { scale: 0.55, opacity: 0, duration: 0.34, ease: "back.out(2)" }, 6.86)
+        .from("#s2-c4", { scale: 0.55, opacity: 0, duration: 0.34, ease: "back.out(2)" }, 7.38)
+        .from("#s2-closes", { opacity: 0, y: 12, duration: 0.4, ease: E }, 7.91);
+
+      /* ---------------- Scene 3 — 8.9 to 14.2 ----------------
+         Centrepiece. Rows arrive on consecutive beats and the bars grow to width;
+         the completed table then holds ~1.55s so the whole shape reads as one
+         object. Total lands on the strongest cue in the window. */
+      tl.from("#s3-eye", { y: 22, opacity: 0, duration: 0.4, ease: E }, 9.05)
+        .from("#s3-h", { y: 30, opacity: 0, duration: 0.5, ease: E }, 9.15)
+        .from("#s3-p", { y: 24, opacity: 0, duration: 0.5, ease: E }, 9.4)
+        .from("#s3-card", { y: 40, opacity: 0, duration: 0.55, ease: E }, 9.0);
+
+      // beat-grid: rows at 9.50 / 10.01 / 10.54 / 11.06 / 11.60 (consecutive beats)
+      const rowAt = [9.5, 10.01, 10.54, 11.06, 11.6];
+      rowAt.forEach((t, i) => {
+        const n = i + 1;
+        tl.from(`#s3-r${n}`, { x: 34, opacity: 0, duration: 0.38, ease: E }, t).from(
+          `#s3-b${n}`,
+          { scaleX: 0, duration: 0.42, ease: "power2.out" },
+          t + 0.06,
+        );
+      });
+
+      // beat-locked: 12.65s (strongCue 1.00) — the payoff
+      tl.from("#s3-total", { y: 20, opacity: 0, duration: 0.45, ease: "power3.out" }, 12.65);
+
+      /* ---------------- Scene 4 — 14.2 to 17.9 ----------------
+         A receipt is a small object and reads wrong blown up, so it stays narrow
+         and centred. Line items together; the Paid total lands on its own. */
+      tl.from("#s4-head", { y: 26, opacity: 0, duration: 0.45, ease: E }, 14.35)
+        .from("#s4-card", { y: 40, opacity: 0, duration: 0.55, ease: E }, 14.4)
+        .from("#s4-l1", { opacity: 0, x: 18, duration: 0.4, ease: E }, 14.85)
+        .from("#s4-l2", { opacity: 0, x: 18, duration: 0.4, ease: E }, 15.05)
+        // beat-grid: paid total at 16.34s
+        .from("#s4-paid", { opacity: 0, y: 16, duration: 0.45, ease: E }, 16.34)
+        .from("#s4-note", { opacity: 0, duration: 0.45 }, 16.75);
+
+      /* ---------------- Scene 5 — 17.9 to 21.5 ----------------
+         Ground flips to ink on the strong cue, then everything settles and stops.
+         No riser, no swell — the bed fades under it. */
+      // beat-locked: 17.91s (strongCue 1.00) — the cut to ink
+      tl.from("#s5-ground", { opacity: 0, duration: 0.3, ease: "power2.out" }, 17.91)
+        .from("#s5-mark", { y: 26, opacity: 0, duration: 0.6, ease: E }, 18.1)
+        .from("#s5-tag", { y: 22, opacity: 0, duration: 0.55, ease: E }, 19.0)
+        .from("#s5-addr", { opacity: 0, duration: 0.5 }, 20.0);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
