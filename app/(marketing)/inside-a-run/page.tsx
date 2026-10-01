@@ -117,7 +117,10 @@ function Artefact({
             style={{ objectPosition: position }}
           />
         ) : null}
-        <div className="flex grow flex-col justify-center">{children}</div>
+        {/* Bottom-aligned, not centred: every card then shows its photograph
+            above the panel rather than banding it top and bottom, which is the
+            storefront composition the first card always had. */}
+        <div className="flex grow flex-col justify-end">{children}</div>
         <p className="mt-5 self-center rounded-full border border-hairline bg-surface px-3 py-1 text-[12px] tracking-[-0.01em] text-ink-muted">
           {when}
         </p>
@@ -168,6 +171,11 @@ export default async function InsideARunPage() {
             when="Day 5"
             title="The storefront your people see."
             body="Your subdomain, your logo, your accent colour, and the sizes a buyer picks from. One link goes to the group; nobody asks you what size to put down."
+            photo={{
+              src: "/products/heavyweight-hoodie.webp",
+              alt: "A navy heavyweight hoodie, laid flat",
+            }}
+            position="center 32%"
           >
             <StorefrontSpecimen />
           </Artefact>

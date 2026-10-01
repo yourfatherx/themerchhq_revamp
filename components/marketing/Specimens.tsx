@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { cn } from "@/lib/cn";
 
 /**
@@ -17,51 +16,27 @@ import { cn } from "@/lib/cn";
  */
 
 /**
- * The reference's image card with a panel floating over its lower edge. Here
- * the "image" is the garment plate, so the card reads as a storefront listing
- * rather than as decoration.
+ * A storefront listing: the address it lives at, and the card a buyer taps.
+ *
+ * The garment is not here. It is the card's own full-bleed photograph, set by
+ * the page — this used to carry its own inset plate, which made it the one
+ * artefact whose image stopped short of the card's edges while the other two
+ * ran to them. The specimen is the panel; the product shot is the ground it
+ * sits on, the same as every other card in the row.
  */
 export function StorefrontSpecimen() {
   return (
-    // The plate needs real height for the panel to overlay *onto*. It carries
-    // the actual catalogue flat-lay rather than a flat colour block: the card is
-    // depicting a storefront listing, and a listing shows the garment.
-    <div className="relative min-h-[380px] overflow-hidden rounded-md bg-plate p-5">
-      {/* The photo gets its own band rather than filling the plate.
-          The listing panel covers the plate's lower half, so filling it left
-          only the top quarter of the frame showing — and the top quarter of a
-          catalogue flat-lay is the generous empty margin it is shot with, so
-          the garment was all but invisible. Scaling up did not help: it
-          magnified the margin with it.
-          A band of fixed proportion fixes the crop instead. The image covers a
-          wide, short box, which forces a centre crop — the chest of the
-          garment — at every width this card takes, with no per-breakpoint
-          tuning. The band bleeds to the plate's edges because the plate is
-          painted the same grey the flat-lay is shot on. */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-[56%] overflow-hidden"
-      >
-        <Image
-          src="/products/heavyweight-hoodie.webp"
-          alt=""
-          fill
-          sizes="(min-width: 1024px) 40vw, 100vw"
-          className="object-cover"
-          style={{ objectPosition: "center 45%" }}
-        />
-      </div>
-
-      {/* On its own chip, not straight on the plate. Once the photo filled the
-          band the garment's shoulder reached under this line at the narrower
-          card widths, and Ink Gray on navy measured 3.19:1. A solid chip is
-          background-independent — and a storefront address belongs in something
-          shaped like an address bar anyway. */}
-      <p className="relative inline-flex rounded-full bg-surface px-2.5 py-1 text-[12px] tracking-[-0.01em] text-ink-muted">
+    <>
+      {/* On a chip, not straight on the photograph. Ink Gray over the garment's
+          navy shoulder measures 3.19:1; on a solid chip it is 6.58:1 and does
+          not depend on what the picture behind it happens to be doing. A
+          storefront address belongs in something shaped like an address bar
+          anyway. */}
+      <p className="mb-3 inline-flex self-start rounded-full bg-surface px-2.5 py-1 text-[12px] tracking-[-0.01em] text-ink-muted">
         music-club.themerchhq.in
       </p>
 
-      <div className="absolute inset-x-4 bottom-4 rounded-md border border-hairline bg-surface p-4">
+      <div className="rounded-md border border-hairline bg-surface p-4">
         <p className="text-[17px] leading-[1.25] font-medium tracking-[-0.03em] text-ink">Hostel Night 2026</p>
         <p className="figure mt-1 text-[15px] text-ink-muted">
           From <span className="text-ink">₹899</span>
@@ -88,7 +63,7 @@ export function StorefrontSpecimen() {
           <span className="figure text-[15px] text-ink">9d 04h</span>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
