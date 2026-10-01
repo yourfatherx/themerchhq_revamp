@@ -286,13 +286,15 @@ export default function TokensPage() {
         </div>
 
         <h3 className="t-h3 mt-14 text-ink">
-          Iconography — solid fills, three shapes, one word beside it
+          Iconography — one library, one weight, one word beside it
         </h3>
         <p className="t-body mt-3 max-w-[68ch] text-ink-muted">
-          A 24-unit grid. Solid New Car fill, no outline, no stroke, no second
-          tint. Detail is knocked through with a mask, never a white shape laid
-          on top. Never a downloaded set, never an emoji, never in an operational
-          colour.
+          A 24-unit grid, stroked rather than filled, in `currentColor` so a
+          glyph takes its colour from whatever it sits in. The set is Lucide,
+          picked one concept at a time: never a second family on the same
+          screen, never an emoji, never in an operational colour. This replaced
+          an in-house set whose own rule — three solid shapes, no stroke — was
+          what made anything representational read as a blob.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           {(Object.keys(ICONS) as IconName[]).map((name) => (

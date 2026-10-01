@@ -1,4 +1,3 @@
-import { useId } from "react";
 import { ICONS, type IconName } from "./icons";
 
 /** 16 inline with body-sm · 20 in buttons and inputs · 24 default and
@@ -12,50 +11,37 @@ type IconProps = {
 };
 
 /**
- * An authored brand icon.
+ * A brand icon.
  *
  * Always `aria-hidden`: the rule is one icon per idea, always with a word
  * beside it, so the word carries the meaning and the glyph is decorative.
  *
- * Fill is `currentColor`, so an icon takes the accent from its container and
+ * Colour is `currentColor`, so an icon takes the accent from its container and
  * never carries state itself — state is carried by the label, not the glyph.
+ *
+ * Stroke width is scaled so the line holds the same optical weight at every
+ * size. Lucide is drawn at 2 on a 24 grid; left alone, that same 2 is a third
+ * of the glyph at 16px and reads as a smudge, while at 32 it looks underdrawn.
  */
+const STROKE: Record<IconSize, number> = {
+  16: 2.25,
+  20: 2,
+  24: 1.9,
+  32: 1.7,
+};
+
 export function Icon({ name, size = 24, className }: IconProps) {
-  const def = ICONS[name];
-  const cut = "cut" in def ? def.cut : undefined;
-  const maskId = `mhqi-${useId()}`;
+  const Glyph = ICONS[name];
 
   return (
-    <svg
+    <Glyph
       width={size}
       height={size}
-      viewBox="0 0 24 24"
-      fill="currentColor"
+      strokeWidth={STROKE[size]}
       aria-hidden="true"
+      focusable="false"
       className={className}
       style={{ display: "block" }}
-    >
-      {cut ? (
-        <>
-          <mask
-            id={maskId}
-            maskUnits="userSpaceOnUse"
-            x="0"
-            y="0"
-            width="24"
-            height="24"
-          >
-            <rect width="24" height="24" fill="#FFFFFF" />
-            <g fill="#000000" dangerouslySetInnerHTML={{ __html: cut }} />
-          </mask>
-          <g
-            mask={`url(#${maskId})`}
-            dangerouslySetInnerHTML={{ __html: def.base }}
-          />
-        </>
-      ) : (
-        <g dangerouslySetInnerHTML={{ __html: def.base }} />
-      )}
-    </svg>
+    />
   );
 }
