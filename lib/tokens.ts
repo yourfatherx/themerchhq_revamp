@@ -131,6 +131,16 @@ export const PAIRINGS = [
     use: "The primary button, the closing band, and type over hero media",
   },
   {
+    // White at 60% over Chinese Black, composited. The footer's labels and its
+    // closing line are set in it: quieter than the links beside them without
+    // reaching for a second grey the palette does not have for dark grounds.
+    fg: "#a1a0a5",
+    bg: PALETTE.ink,
+    stated: 7.17,
+    label: "White at 60% on Chinese Black",
+    use: "Footer column labels, the contact note, and the copyright line",
+  },
+  {
     fg: PALETTE.ink,
     bg: PALETTE.canvas,
     stated: 17.82,
