@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { PhotoBand } from "@/components/marketing/PhotoBand";
 import {
   ReceiptSpecimen,
@@ -72,12 +73,24 @@ function Artefact({
   when,
   title,
   body,
+  photo,
+  position = "center",
   children,
 }: {
   n: number;
   when: string;
   title: string;
   body: string;
+  /**
+   * A photograph behind the specimen. The first card does not take one — its
+   * specimen carries the garment itself — but the other two were a small panel
+   * floating in an empty grey box, which read as unfinished rather than spare.
+   * The specimen always sits on a solid panel over the top, so nothing here is
+   * type on photography.
+   */
+  photo?: { src: string; alt: string };
+  /** CSS object-position, to keep the subject out from behind the panel. */
+  position?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -93,7 +106,17 @@ function Artefact({
           is the tallest, and letting each card size to its own contents pushed
           the three titles onto different lines — which read as three unrelated
           blocks rather than one sequence. */}
-      <div className="mt-5 flex h-[480px] flex-col bg-canvas p-5">
+      <div className="relative isolate mt-5 flex h-[480px] flex-col overflow-hidden bg-canvas p-5">
+        {photo ? (
+          <Image
+            src={photo.src}
+            alt={photo.alt}
+            fill
+            sizes="(min-width: 1024px) 33vw, 100vw"
+            className="-z-10 object-cover"
+            style={{ objectPosition: position }}
+          />
+        ) : null}
         <div className="flex grow flex-col justify-center">{children}</div>
         <p className="mt-5 self-center rounded-full border border-hairline bg-surface px-3 py-1 text-[12px] tracking-[-0.01em] text-ink-muted">
           {when}
@@ -154,18 +177,25 @@ export default async function InsideARunPage() {
             when="At close"
             title="The table that goes to print."
             body="Every order carries the size its buyer chose, so this is finished the moment the storefront closes. No thread of corrections, and nothing to rebuild by hand."
+            photo={{
+              src: "/studio/print-press.jpg",
+              alt: "A screen printing carousel on the shop floor",
+            }}
+            position="center 35%"
           >
-            <div className="flex items-center justify-between gap-4 pb-3">
-              <p className="text-[13px] tracking-[-0.01em] text-ink-muted">
-                Heavyweight hoodie — to print
-              </p>
-              <span className="shrink-0 rounded-full bg-surface px-2.5 py-1 text-[12px] font-medium tracking-[-0.01em] text-ink">
-                Closed
-              </span>
+            <div className="rounded-md bg-surface p-5">
+              <div className="flex items-center justify-between gap-4 pb-3">
+                <p className="text-[13px] tracking-[-0.01em] text-ink-muted">
+                  Heavyweight hoodie — to print
+                </p>
+                <span className="shrink-0 rounded-full bg-canvas px-2.5 py-1 text-[12px] font-medium tracking-[-0.01em] text-ink">
+                  Closed
+                </span>
+              </div>
+              {/* Compact: in a third of the width the default density wraps the
+                  size column onto two lines. */}
+              <SizeTableSpecimen density="compact" />
             </div>
-            {/* Compact: in a third of the width the default density wraps the
-                size column onto two lines. */}
-            <SizeTableSpecimen density="compact" />
           </Artefact>
 
           <Artefact
@@ -173,8 +203,13 @@ export default async function InsideARunPage() {
             when="On payment"
             title="Where the money goes."
             body="Buyers pay us directly by UPI, card or netbanking, and each one gets this. Nothing lands in a personal account, so there is no float to carry and nothing to reconcile at the end."
+            photo={{
+              src: "/studio/share-link.jpg",
+              alt: "A person in a white shirt tapping on a phone",
+            }}
+            position="center 30%"
           >
-            <div className="bg-surface p-5">
+            <div className="rounded-md bg-surface p-5">
               <p className="mb-5 text-[13px] tracking-[-0.01em] text-ink-muted">
                 Order MHQ-4KPR
               </p>
