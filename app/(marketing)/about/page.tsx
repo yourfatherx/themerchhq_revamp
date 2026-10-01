@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Icon } from "@/components/brand/Icon";
 import { PhotoBand } from "@/components/marketing/PhotoBand";
 import { ProductPlate } from "@/components/store/ProductPlate";
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * MKT-5, in the storefront layout.
+ * MKT-5, on the editorial layout.
  *
  * The page's own numbers are restatements, not new claims: 2021 is in
  * `OfferBento`, the unit range and the reprint rate are in `ProofRow`. Nothing
@@ -21,6 +22,16 @@ export const metadata: Metadata = {
  * and lead time is shown as the span across a category rather than its
  * minimum — Paper runs a sticker sheet in 7 days and an enamel pin in 14, and
  * quoting the 7 would be a date we could not hold to on half the category.
+ *
+ * Two things the reference does that this page deliberately does not:
+ *
+ *  - Its pulled-out line is a quotation attributed to a named director. There
+ *    is no such quote here to use, and writing one would be the fabrication
+ *    this site refuses everywhere else. The line set large below is the page's
+ *    own sentence, unattributed, because the company is the one saying it.
+ *  - Its team is a row of portraits with names. We have neither photographs nor
+ *    a published roster, so the row carries placeholders and names nobody — see
+ *    the note on `TEAM` below.
  */
 
 const INCLUDED = [
@@ -36,6 +47,24 @@ const STATS = [
   ["2021", "Printing campaigns since"],
   ["40–2,000", "Units in a campaign"],
   ["1%", "Orders reprinted for a size error"],
+] as const;
+
+/**
+ * PLACEHOLDERS. Every file here is generated and nobody in them is real, which
+ * is why they sit under `/studio/placeholder/` and why not one of them carries
+ * a name or a job title.
+ *
+ * They are framed so no face is identifiable — turned away, in profile, or
+ * cropped below the shoulders. That is on purpose rather than a limitation of
+ * the generator: an invented face under a real company's "our team" is a claim
+ * about who works here, and this site will not invent a client, a case study or
+ * a testimonial either. Swap in real photographs before this ships, and the
+ * names and roles with them.
+ */
+const TEAM = [
+  { src: "/studio/placeholder/team-1.webp", alt: "Someone sorting fabric at a studio bench" },
+  { src: "/studio/placeholder/team-2.webp", alt: "Someone working at a screen printing press" },
+  { src: "/studio/placeholder/team-3.webp", alt: "Someone carrying a stack of folded blanks" },
 ] as const;
 
 const PRINCIPLES = [
@@ -61,6 +90,12 @@ const PRINCIPLES = [
   },
 ] as const;
 
+const JUMP = [
+  { href: "#what-we-do", label: "What we do." },
+  { href: "#the-range", label: "The range." },
+  { href: "#the-team", label: "The team." },
+] as const;
+
 export default async function AboutPage() {
   const items = await getCatalogue();
 
@@ -81,48 +116,49 @@ export default async function AboutPage() {
 
   return (
     <main className="bg-surface">
-      <header className="px-4 pt-10 pb-8 sm:px-5 lg:pt-14">
-        <h1 className="max-w-[20ch] text-[clamp(32px,2.2vw+24px,56px)] leading-[1.02] font-semibold tracking-[-0.045em] text-ink uppercase">
+      {/* The reference opens on a heading set far larger than anything else on
+          the page, with the prose held to a narrow measure beside it. */}
+      <header className="px-4 pt-12 pb-10 sm:px-5 lg:pt-20">
+        <h1 className="max-w-[16ch] text-[clamp(44px,5vw+20px,96px)] leading-[0.95] font-semibold tracking-[-0.05em] text-ink uppercase">
+          About{" "}
+          <em className="font-normal tracking-[-0.035em] normal-case">us.</em>
+        </h1>
+
+        {/* The page's old headline. The reference's display line is "ABOUT US."
+            and nothing else, which is a worse sentence than the one this page
+            already had — so it keeps both: the label large, and the claim
+            directly under it where it still opens the page. */}
+        <p className="mt-6 max-w-[24ch] text-[clamp(22px,1.4vw+16px,30px)] leading-[1.15] font-medium tracking-[-0.035em] text-ink">
           Someone has to run the merch.{" "}
-          <em className="font-normal tracking-[-0.03em] normal-case">
+          <em className="font-normal tracking-[-0.03em]">
             It shouldn&apos;t be you.
           </em>
-        </h1>
-        <p className="mt-3 max-w-[60ch] text-[15px] leading-[1.45] tracking-[-0.01em] text-ink-muted">
-          We design and produce merch for colleges, clubs and companies in
-          Bengaluru, then give every client a storefront on their own subdomain
-          so their people order and pay for it themselves. The organiser shares
-          one link. That is the whole job.
         </p>
-      </header>
 
-      {/* Stacked below sm: at 390 a third of this column is 80px and "40–2,000"
-          needs ~110px, which broke the figure across two lines mid-number. */}
-      <section className="border-t border-hairline px-4 py-10 sm:px-5">
-        <dl className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-          {STATS.map(([figure, caption]) => (
-            <div
-              key={caption}
-              className="flex items-baseline justify-between gap-4 sm:block"
-            >
-              <dt className="figure text-[clamp(28px,1.6vw+20px,40px)] leading-[1.05] font-medium tracking-[-0.04em] whitespace-nowrap text-ink">
-                {figure}
-              </dt>
-              <dd className="text-right text-[13px] leading-[1.4] tracking-[-0.01em] text-ink-muted sm:mt-2 sm:text-left">
-                {caption}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </section>
+        <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-10">
+          <nav aria-label="On this page" className="lg:col-span-3">
+            <ul className="space-y-1.5">
+              {JUMP.map((j) => (
+                <li key={j.href}>
+                  <a
+                    href={j.href}
+                    className="text-[15px] leading-[1.45] tracking-[-0.01em] text-ink-muted no-underline transition-opacity duration-150 ease-brand hover:text-ink-muted hover:no-underline hover:opacity-60"
+                  >
+                    {j.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-      <section className="border-t border-hairline px-4 py-12 sm:px-5 lg:py-16">
-        <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
-          <div className="lg:col-span-6">
-            <h2 className="max-w-[20ch] text-[24px] leading-[1.15] font-medium tracking-[-0.04em] text-ink">
-              We remove the organiser&apos;s half of a merch run.
-            </h2>
-            <p className="mt-2 max-w-[52ch] text-[15px] leading-[1.45] tracking-[-0.01em] text-ink-muted">
+          <div className="grid gap-6 lg:col-span-9 lg:grid-cols-2 lg:gap-10">
+            <p className="text-[15px] leading-[1.55] tracking-[-0.01em] text-ink-muted">
+              We design and produce merch for colleges, clubs and companies in
+              Bengaluru, then give every client a storefront on their own
+              subdomain so their people order and pay for it themselves. The
+              organiser shares one link. That is the whole job.
+            </p>
+            <p className="text-[15px] leading-[1.55] tracking-[-0.01em] text-ink-muted">
               Every merch run on a campus works the same way. One person — a
               club secretary, a fest head, someone in HR — ends up holding a
               Google Form, a spreadsheet, a UPI ID and a WhatsApp group. They
@@ -131,6 +167,60 @@ export default async function AboutPage() {
               are wrong. That half is what we take.
             </p>
           </div>
+        </div>
+      </header>
+
+      {/* Full-bleed, as the reference sets its one wide photograph. */}
+      <div className="relative aspect-[16/7] w-full bg-plate">
+        <Image
+          src="/studio/placeholder/studio-desk.webp"
+          alt="Three people working at a studio table, seen from directly above"
+          fill
+          sizes="100vw"
+          className="object-cover"
+        />
+      </div>
+
+      {/* The page's own sentence, set large. Not a quotation: see the note at
+          the top of this file. */}
+      <section
+        id="what-we-do"
+        className="scroll-mt-28 px-4 py-16 sm:px-5 lg:py-24"
+      >
+        <div className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
+          <div className="lg:col-span-6">
+            <p
+              aria-hidden="true"
+              className="text-[40px] leading-none font-semibold text-ink"
+            >
+              &ldquo;
+            </p>
+            <p className="mt-2 max-w-[22ch] text-[clamp(26px,1.8vw+18px,38px)] leading-[1.15] font-normal tracking-[-0.03em] text-ink italic">
+              None of these are aspirations. They are the rules we lose money on
+              when we break them.
+            </p>
+            <p className="mt-6 text-[13px] leading-[1.4] tracking-[-0.01em] text-ink-muted">
+              Which is the only kind worth publishing.
+            </p>
+          </div>
+
+          <div className="relative aspect-[4/3] lg:col-span-6">
+            <Image
+              src="/studio/placeholder/press-wall.webp"
+              alt="Someone pinning sheets of paper to a studio wall"
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-hairline px-4 py-12 sm:px-5 lg:py-16">
+        <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
+          <h2 className="max-w-[20ch] text-[24px] leading-[1.15] font-medium tracking-[-0.04em] text-ink lg:col-span-6">
+            We remove the organiser&apos;s half of a merch run.
+          </h2>
 
           <ul className="grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:col-span-6 lg:content-start">
             {INCLUDED.map((item) => (
@@ -162,7 +252,10 @@ export default async function AboutPage() {
         />
       </div>
 
-      <section className="border-t border-hairline px-4 py-12 sm:px-5 lg:py-16">
+      <section
+        id="the-range"
+        className="scroll-mt-28 border-t border-hairline px-4 py-12 sm:px-5 lg:py-16"
+      >
         <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-3">
           <h2 className="max-w-[20ch] text-[24px] leading-[1.15] font-medium tracking-[-0.04em] text-ink">
             Five categories, all made to order.
@@ -191,6 +284,67 @@ export default async function AboutPage() {
             </li>
           ))}
         </ul>
+      </section>
+
+      {/* Portraits staggered down the left, the heading and the numbers held to
+          the right, as the reference lays its team out. */}
+      <section
+        id="the-team"
+        className="scroll-mt-28 border-t border-hairline px-4 py-16 sm:px-5 lg:py-24"
+      >
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <ul className="grid grid-cols-2 gap-4 lg:col-span-5 lg:gap-5">
+            {TEAM.map((p, i) => (
+              <li
+                key={p.src}
+                className={
+                  // The middle frame drops, so the column reads as a column
+                  // rather than as a grid that lost a cell.
+                  i === 1 ? "relative aspect-[3/4] translate-y-8" : "relative aspect-[3/4]"
+                }
+              >
+                <Image
+                  src={p.src}
+                  alt={p.alt}
+                  fill
+                  sizes="(min-width: 1024px) 20vw, 45vw"
+                  className="bg-plate object-cover"
+                />
+              </li>
+            ))}
+          </ul>
+
+          <div className="lg:col-span-7">
+            <h2 className="text-[clamp(32px,2.6vw+18px,56px)] leading-[1.02] font-semibold tracking-[-0.045em] text-ink uppercase">
+              The{" "}
+              <em className="font-normal tracking-[-0.035em] normal-case">
+                team.
+              </em>
+            </h2>
+            <p className="mt-5 max-w-[56ch] text-[15px] leading-[1.55] tracking-[-0.01em] text-ink-muted">
+              The studio and the storefronts are in Bengaluru; production is in
+              Tiruppur. One team from artwork to dispatch, which is why the
+              person who quotes a run is the person who can tell you where it is
+              on the floor.
+            </p>
+
+            <dl className="mt-10 grid grid-cols-1 gap-6 border-t border-hairline pt-8 sm:grid-cols-3">
+              {STATS.map(([figure, caption]) => (
+                <div
+                  key={caption}
+                  className="flex items-baseline justify-between gap-4 sm:block"
+                >
+                  <dt className="figure text-[clamp(32px,2vw+22px,52px)] leading-[1.05] font-medium tracking-[-0.04em] whitespace-nowrap text-ink">
+                    {figure}
+                  </dt>
+                  <dd className="max-w-[18ch] text-right text-[13px] leading-[1.4] tracking-[-0.01em] text-ink-muted sm:mt-3 sm:text-left">
+                    {caption}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
       </section>
 
       <section className="border-t border-hairline px-4 py-12 sm:px-5 lg:py-16">
