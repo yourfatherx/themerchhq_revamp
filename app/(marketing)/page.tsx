@@ -67,8 +67,8 @@ export default async function Home() {
         alt="An order being boxed and tied at the packing bench"
         title="What a run produces"
         body="The storefront, the size table and the receipt, as the product renders them."
-        href="/work"
-        cta="See the work"
+        href="/inside-a-run"
+        cta="Look inside a run"
       />
       <PhotoBand
         src="/studio/print-press.jpg"

@@ -34,7 +34,7 @@ import { PromoTicker } from "./PromoTicker";
 const LINKS = [
   { href: "/how-it-works", label: "How it works" },
   { href: "/catalogue", label: "Catalogue" },
-  { href: "/work", label: "Work" },
+  { href: "/inside-a-run", label: "Inside a run" },
   { href: "/about", label: "About" },
 ] as const;
 

@@ -35,10 +35,10 @@ export function StorefrontSpecimen() {
         className="object-cover object-top"
       />
 
-      <p className="t-caption relative">music-club.themerchhq.in</p>
+      <p className="relative text-[12px] tracking-[-0.01em] text-ink-muted">music-club.themerchhq.in</p>
 
       <div className="absolute inset-x-4 bottom-4 rounded-md border border-hairline bg-surface p-4">
-        <p className="t-h4 text-ink">Hostel Night 2026</p>
+        <p className="text-[17px] leading-[1.25] font-medium tracking-[-0.03em] text-ink">Hostel Night 2026</p>
         <p className="figure mt-1 text-[15px] text-ink-muted">
           From <span className="text-ink">₹899</span>
         </p>
@@ -60,7 +60,7 @@ export function StorefrontSpecimen() {
         </div>
 
         <div className="mt-4 flex items-center justify-between border-t border-hairline pt-3">
-          <span className="t-caption">Closes in</span>
+          <span className="text-[12px] tracking-[-0.01em] text-ink-muted">Closes in</span>
           <span className="figure text-[15px] text-ink">9d 04h</span>
         </div>
       </div>
@@ -153,17 +153,17 @@ export function ReceiptSpecimen() {
           ["GST at 12%", "₹108.00"],
         ].map(([k, v]) => (
           <div key={k} className="flex justify-between gap-4">
-            <dt className="t-body-sm text-ink-muted">{k}</dt>
+            <dt className="text-[14px] leading-[1.45] tracking-[-0.01em] text-ink-muted">{k}</dt>
             <dd className="figure text-[15px] text-ink">{v}</dd>
           </div>
         ))}
         <div className="flex justify-between gap-4 border-t border-hairline pt-3">
-          <dt className="t-body font-medium text-ink">Paid</dt>
+          <dt className="text-[15px] leading-[1.45] tracking-[-0.01em] font-medium text-ink">Paid</dt>
           <dd className="figure text-[17px] font-medium text-ink">₹1,007.00</dd>
         </div>
       </dl>
 
-      <p className="t-caption mt-5 border-t border-hairline pt-4">
+      <p className="mt-5 border-t border-hairline pt-4 text-[12px] leading-[1.4] tracking-[-0.01em] text-ink-muted">
         Paid to The Merch HQ by UPI, not to an individual&apos;s account.
       </p>
     </>

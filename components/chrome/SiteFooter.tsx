@@ -29,7 +29,7 @@ const COLUMNS = [
   {
     heading: "Company",
     links: [
-      { href: "/work", label: "Work" },
+      { href: "/inside-a-run", label: "Inside a run" },
       { href: "/about", label: "About" },
       // MKT-5: the organiser's way in lives in the footer.
       { href: "/dashboard", label: "Organiser login" },
